@@ -1,7 +1,6 @@
+import { HotNewsCar } from '@/components/HotNewsCar';
 import { biLiBiLiHotNewsUsingGet } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
-import { Card, Image, List } from 'antd';
-import VirtualList from 'rc-virtual-list';
 import React, { useEffect, useState } from 'react';
 
 const Index: React.FC = () => {
@@ -11,14 +10,14 @@ const Index: React.FC = () => {
     const res = await biLiBiLiHotNewsUsingGet();
     if (res.code === 0 && res.data) {
       // bilibiliHotList = res.data;
-      // setBilibiliHotList(res.data);
+      setBilibiliHotList(res.data);
     }
   };
 
   useEffect(() => {
     bilibiliHosts();
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    setBilibiliHotList(dataSource);
+    // setBilibiliHotList(dataSource);
   }, []);
 
   const dataSource = [
@@ -186,57 +185,20 @@ const Index: React.FC = () => {
             gap: 16,
           }}
         >
-          <Card
-            title={
-              <>
-                <Image
-                  preview={false}
-                  style={{ width: 30, height: 30 }}
-                  src={
-                    'https://gw.alipayobjects.com/zos/bmw-prod/daaf8d50-8e6d-4251-905d-676a24ddfa12.svg'
-                  }
-                />
-                <span>BiliBili</span>
-              </>
+          <HotNewsCar
+            platFormName={'bilibili'}
+            platFormURL={
+              'https://gw.alipayobjects.com/zos/bmw-prod/daaf8d50-8e6d-4251-905d-676a24ddfa12.svg'
             }
-            extra={'热门榜'}
-            style={{ width: 300 }}
-          >
-            <List>
-              <VirtualList data={bilibiliHotList} height={300} itemHeight={10} itemKey="email">
-                {(item: API.HotNewsVO, index) => (
-                  <List.Item key={item.id !== null ? item.id : item.biId}>
-                    <List.Item.Meta
-                      title={
-                        <>
-                          <span>{index + 1}、</span>
-                          <a href="">{item.title}</a>
-                        </>
-                      }
-                    />
-                  </List.Item>
-                )}
-              </VirtualList>
-            </List>
-          </Card>
-          {/*<InfoCard*/}
-          {/*  index={1}*/}
-          {/*  href="https://umijs.org/docs/introduce/introduce"*/}
-          {/*  title="了解 umi"*/}
-          {/*  desc="umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。"*/}
-          {/*/>*/}
-          {/*<InfoCard*/}
-          {/*  index={2}*/}
-          {/*  title="了解 ant design"*/}
-          {/*  href="https://ant.design"*/}
-          {/*  desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"*/}
-          {/*/>*/}
-          {/*<InfoCard*/}
-          {/*  index={3}*/}
-          {/*  title="了解 Pro Components"*/}
-          {/*  href="https://procomponents.ant.design"*/}
-          {/*  desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"*/}
-          {/*/>*/}
+            hotList={bilibiliHotList}
+          />{' '}
+          <HotNewsCar
+            platFormName={'bilibili'}
+            platFormURL={
+              'https://gw.alipayobjects.com/zos/bmw-prod/daaf8d50-8e6d-4251-905d-676a24ddfa12.svg'
+            }
+            hotList={bilibiliHotList}
+          />
         </div>
       </div>
     </PageContainer>

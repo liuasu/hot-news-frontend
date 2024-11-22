@@ -1,40 +1,44 @@
-import { Card, Image, List } from 'antd';
+import { RedoOutlined } from '@ant-design/icons';
+import { Button, Card, Image, List } from 'antd';
+import VirtualList from 'rc-virtual-list';
 import React from 'react';
-import HotNewsVO = API.HotNewsVO;
 
 export const HotNewsCar: React.FC<{
-  title: string;
-  index: number;
-  desc: string;
-  hotList: HotNewsVO[];
-}> = ({ title, href, index, desc }) => {
+  platFormName: string;
+  platFormURL: string;
+  hotList: API.HotNewsVO[];
+}> = ({ platFormName, platFormURL, hotList }) => {
   return (
     <div>
       <Card
         title={
           <>
-            <Image
-              preview={false}
-              style={{ width: 30, height: 30 }}
-              src={
-                'https://gw.alipayobjects.com/zos/bmw-prod/daaf8d50-8e6d-4251-905d-676a24ddfa12.svg'
-              }
-            />
-            <span>BiliBili</span>
+            <Image preview={false} style={{ width: 30, height: 30 }} src={platFormURL} />
+            <span>{platFormName}</span>
           </>
         }
         extra={'热门榜'}
-        style={{ width: 300 }}
+        style={{ width: 350 }}
+        actions={[
+          // eslint-disable-next-line react/jsx-key
+          <span>刚刚更新</span>,
+          // eslint-disable-next-line react/jsx-key
+          <Button type="primary" shape="circle" icon={<RedoOutlined />} />,
+        ]}
+        bordered={true}
       >
         <List>
-          <VirtualList data={bilibiliHotList} itemHeight={47} itemKey="email" height={400}>
-            {(item: HotNewsVO) => (
-              <List.Item key={item.biId}>
+          <VirtualList data={hotList} height={250} itemHeight={40} disabled={true}>
+            {(item: API.HotNewsVO, index) => (
+              <List.Item key={item.id !== null ? item.id : item.biId}>
                 <List.Item.Meta
-                  title={<a href="https://ant.design">{item.title}</a>}
-                  description={item.hotDesc}
+                  title={
+                    <>
+                      <span>{index + 1}、</span>
+                      <a href="">{item.title}</a>
+                    </>
+                  }
                 />
-                <div>Content</div>
               </List.Item>
             )}
           </VirtualList>
