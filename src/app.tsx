@@ -54,9 +54,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    waterMarkProps: {
-      content: initialState?.currentUser?.userName,
-    },
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.userName,
+    // },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -67,7 +67,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     bgLayoutImgList: [
       {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
+        // src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
         left: 85,
         bottom: 100,
         height: '303px',
