@@ -2,7 +2,11 @@ export default [
   {
     path: '/user',
     layout: false,
-    routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
+    routes: [
+      { name: '登录', path: '/user/login', component: './User/Login' },
+      { name: '注册', path: '/user/register', component: './User/Register' },
+      { name: '忘记密码', path: '/user/forget', component: './User/Forget' },
+    ],
   },
   { path: '/index', name: '首页', icon: 'smile', component: './index' },
   {

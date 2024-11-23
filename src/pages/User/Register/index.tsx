@@ -1,10 +1,9 @@
-import { getLoginUserUsingGet, userLoginUsingPost } from '@/services/hot-news/userController';
-import { history, Link, useModel } from '@@/exports';
+import { userRegisterUsingPost } from '@/services/hot-news/userController';
+import { history, Link } from '@@/exports';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginFormPage, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import { message, Tabs, theme } from 'antd';
 import { useState } from 'react';
-import { flushSync } from 'react-dom';
 
 type LoginType = 'account';
 
@@ -12,32 +11,19 @@ const Page = () => {
   const [loginType, setLoginType] = useState<LoginType>('account');
   const { token } = theme.useToken();
 
-  const { setInitialState } = useModel('@@initialState');
-  const fetchUserInfo = async () => {
-    const res = await getLoginUserUsingGet();
-    if (res.code === 0 && res.data) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: res.data,
-        }));
-      });
-    }
-  };
-  const handleSubmit = async (values: API.UserLoginRequest) => {
+  const handleSubmit = async (values: API.UserRegisterRequest) => {
     try {
       // 登录
-      const res = await userLoginUsingPost(values);
+      const res = await userRegisterUsingPost(values);
       if (res.code === 0) {
-        const defaultLoginSuccessMessage = '登录成功！';
+        const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
+        history.push(urlParams.get('redirect') || '/user/login');
         return;
       }
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
+      const defaultLoginFailureMessage = '注册失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
     }
@@ -73,6 +59,11 @@ const Page = () => {
         }}
         onFinish={async (values) => {
           await handleSubmit(values as API.UserLoginRequest);
+        }}
+        submitter={{
+          searchConfig: {
+            submitText: '注 册',
+          },
         }}
       >
         <Tabs
@@ -112,6 +103,20 @@ const Page = () => {
                 },
               ]}
             />
+            <ProFormText.Password
+              name="checkPassword"
+              fieldProps={{
+                size: 'large',
+                prefix: <LockOutlined />,
+              }}
+              placeholder={'确认密码'}
+              rules={[
+                {
+                  required: true,
+                  message: '确认密码是必填项！',
+                },
+              ]}
+            />
           </>
         )}
 
@@ -120,13 +125,7 @@ const Page = () => {
             marginBlockEnd: 24,
           }}
         >
-          <Link to={'/user/register'} style={{ float: 'left' }}>
-            前往注册
-          </Link>
-          <Link to={'/user/forget'} style={{ float: 'right' }}>
-            {' '}
-            忘记密码 ?
-          </Link>
+          <Link to="/user/login">已有账号？去登录</Link>
         </div>
       </LoginFormPage>
     </div>
