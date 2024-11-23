@@ -1,5 +1,5 @@
 import { RedoOutlined } from '@ant-design/icons';
-import { Button, Card, Image, List } from 'antd';
+import { Button, Card, Image, List, Popover } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React from 'react';
 
@@ -24,8 +24,6 @@ const calculateTimeDifference = (timestamp) => {
     return `${hours} 小时前`;
   } else if (minutes > 0) {
     return `${minutes} 分钟前`;
-  } else {
-    return `${seconds} 秒前`;
   }
 };
 
@@ -40,8 +38,8 @@ export const HotNewsCar: React.FC<{
       <Card
         title={
           <>
-            <Image preview={false} style={{ width: 30, height: 30 }} src={platFormURL} />
-            <span>{platFormName}</span>
+            <Image preview={false} style={{ width: 25, height: 25 }} src={platFormURL} />
+            <span> {platFormName}</span>
           </>
         }
         extra={'热门榜'}
@@ -50,15 +48,15 @@ export const HotNewsCar: React.FC<{
           // eslint-disable-next-line react/jsx-key
           <span>{calculateTimeDifference(updateTime)}刚刚更新</span>,
           // eslint-disable-next-line react/jsx-key
-          <Button type="primary" shape="circle" icon={<RedoOutlined />} />,
+          <Button type="primary" shape="circle" icon={<RedoOutlined />} onClick={() => {}} />,
         ]}
         bordered={true}
       >
-        <List>
+        <List split={false}>
           <VirtualList
             data={hotList}
             height={250}
-            itemHeight={hotList.length}
+            itemHeight={20}
             disabled={true}
             itemKey={(item) => (item.id !== null ? item.id : item.biId)}
           >
@@ -68,7 +66,27 @@ export const HotNewsCar: React.FC<{
                   title={
                     <>
                       <span>{index + 1}、</span>
-                      <a href="">{item.title}</a>
+                      <Popover
+                        overlayStyle={{ width: 100 }}
+                        title="操作"
+                        placement="rightTop"
+                        trigger="click"
+                        content={
+                          <div>
+                            <p>
+                              <a rel="noreferrer">配置</a>
+                            </p>
+                            <p>
+                              <a href={item.hotURL} target={'_blank'} rel="noreferrer">
+                                查看详情
+                              </a>
+                            </p>
+                          </div>
+                        }
+                      >
+                        <a>{item.title}</a>
+                      </Popover>
+                      {/*<a href="">{item.title}</a>*/}
                     </>
                   }
                 />
