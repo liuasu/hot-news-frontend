@@ -1,5 +1,6 @@
+import { addUsingPost1 } from '@/services/hot-news/renwuzhongxin';
 import { RedoOutlined } from '@ant-design/icons';
-import { Button, Card, Image, List, Popover } from 'antd';
+import { Button, Card, Image, List, message, Popover } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React from 'react';
 
@@ -74,7 +75,24 @@ export const HotNewsCar: React.FC<{
                         content={
                           <div>
                             <p>
-                              <a rel="noreferrer">配置</a>
+                              <a
+                                rel="noreferrer"
+                                onClick={async () => {
+                                  const res = await addUsingPost1({
+                                    hotNewTitle: item.title,
+                                    hotPlatForm: platFormName,
+                                    taskName: item.title,
+                                    hotUrl: item.hotURL,
+                                  });
+                                  if (res.code === 0) {
+                                    message.success('配置成功');
+                                  } else {
+                                    message.error('配置失败');
+                                  }
+                                }}
+                              >
+                                配置
+                              </a>
                             </p>
                             <p>
                               <a href={item.hotURL} target={'_blank'} rel="noreferrer">

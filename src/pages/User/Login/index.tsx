@@ -123,8 +123,7 @@ const Page = () => {
           <Link to={'/user/register'} style={{ float: 'left' }}>
             前往注册
           </Link>
-          <Link to={'/user/forget'} style={{ float: 'right' }}>
-            {' '}
+          <Link to={''} style={{ float: 'right' }}>
             忘记密码 ?
           </Link>
         </div>

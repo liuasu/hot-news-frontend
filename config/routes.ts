@@ -19,7 +19,7 @@ export default [
       { path: '/admin/sub-page', name: '二级管理页', component: './Admin/Admin' },
     ],
   },
-  { name: '查询表格', icon: 'table', path: '/list', component: './TableList' },
+  { name: '任务中心', icon: 'table', path: '/task', component: './TableList' },
   { path: '/', redirect: '/index' },
   { path: '*', layout: false, component: './404' },
 ];

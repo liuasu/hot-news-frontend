@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 /** 按id获取热点信息接口地 GET /api/hotApi/${param0} */
 export async function findHotApiByIdUsingGet(
@@ -87,16 +87,13 @@ export async function excelAddUsingPost(body: {}, file?: File, options?: { [key:
 }
 
 /** 查询热点信息接口地列表 GET /api/hotApi/list */
-export async function listUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGETParams,
-  options?: { [key: string]: any },
-) {
+export async function listUsingGet(body: API.HotApiQueryReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotApiVO_>('/api/hotApi/list', {
     method: 'GET',
-    params: {
-      ...params,
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }

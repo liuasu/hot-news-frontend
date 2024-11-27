@@ -1,329 +1,303 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
-import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
+import ArticleModal from '@/components/ArticleModal';
 import {
-  FooterToolbar,
-  ModalForm,
-  PageContainer,
-  ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
-  ProTable,
-} from '@ant-design/pro-components';
-import '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
-import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
+  editUsingPost2,
+  listUsingGet1,
+  modelGenerationInTouTiaoUsingPost,
+} from '@/services/hot-news/renwuzhongxin';
+import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ProTable } from '@ant-design/pro-components';
+import { Button, ConfigProvider, Tag } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({
-      ...fields,
-    });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
+const expandedRowRender = (
+  data: API.ThirdPartyAccountVO[],
+  task: API.TaskVO,
+  actionRef: React.RefObject<ActionType>,
+) => {
+  return (
+    <ProTable
+      columns={[
+        { title: '昵称', dataIndex: 'userName', valueType: 'text' },
+        { title: '账号', dataIndex: 'account', valueType: 'text' },
+        { title: '平台', dataIndex: 'platForm', valueType: 'text' },
+        {
+          title: '是否过期',
+          dataIndex: 'isDisabled',
+          valueType: 'text',
+          render: (text, record) => {
+            return record.isDisabled ? '未过期' : '已过期';
+          },
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          key: 'operation',
+          valueType: 'option',
+          render: (text, record) => [
+            // eslint-disable-next-line react/jsx-key
+            <a
+              onClick={async () => {
+                console.log(record);
+                const res = await editUsingPost2({
+                  id: task.id,
+                  platFormAccount: record.account,
+                });
+                if (res.code === 0) {
+                  actionRef.current?.reload(); // 使用 actionRef 刷新表格
+                }
+              }}
+            >
+              选择该账号
+            </a>,
+          ],
+        },
+      ]}
+      headerTitle={false}
+      search={false}
+      options={false}
+      dataSource={data}
+      pagination={false}
+    />
+  );
 };
 
-/**
- * @en-US Update node
- * @zh-CN 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('Configuring');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-    message.success('Configuration is successful');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Configuration failed, please try again!');
-    return false;
-  }
-};
-
-/**
- *  Delete node
- * @zh-CN 删除节点
- *
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('Deleted successfully and will refresh soon');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Delete failed, please try again');
-    return false;
-  }
-};
-const TableList: React.FC = () => {
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-  const [showDetail, setShowDetail] = useState<boolean>(false);
-  const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
-
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
-
-  const columns: ProColumns<API.RuleListItem>[] = [
+export default () => {
+  const columns: ProColumns<API.TaskVO>[] = [
     {
-      title: '规则名称',
-      dataIndex: 'name',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      dataIndex: 'id',
+      valueType: 'number',
+      hideInTable: true,
+      hideInSearch: true,
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) => `${val}${'万'}`,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
+      title: '账号',
+      dataIndex: 'platFormAccount',
+      filters: true,
+      tooltip: '标题过长会自动收缩',
+      valueType: 'select',
       valueEnum: {
-        0: {
-          text: '关闭',
-          status: 'Default',
-        },
-        1: {
-          text: '运行中',
-          status: 'Processing',
-        },
-        2: {
-          text: '已上线',
-          status: 'Success',
-        },
-        3: {
-          text: '异常',
+        all: { text: '超长'.repeat(50) },
+        open: {
+          text: '未解决',
           status: 'Error',
         },
+        closed: {
+          text: '已解决',
+          status: 'Success',
+          disabled: true,
+        },
+        processing: {
+          text: '解决中',
+          status: 'Processing',
+        },
       },
     },
     {
-      title: '上次调度时间',
-      sorter: true,
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder={'请输入异常原因！'} />;
-        }
-        return defaultRender(item);
+      title: '任务名称',
+      dataIndex: 'taskName',
+      ellipsis: true,
+      search: false,
+      tooltip: '标题过长会自动收缩',
+    },
+    {
+      title: '标题',
+      dataIndex: 'hotNewTitle',
+      ellipsis: true,
+      search: false,
+      tooltip: '标题过长会自动收缩',
+    },
+    {
+      title: '热点平台',
+      dataIndex: 'hotPlatForm',
+      search: false,
+      tooltip: '标题过长会自动收缩',
+    },
+
+    {
+      disable: true,
+      title: '状态',
+      dataIndex: 'taskStatus',
+      filters: true,
+      onFilter: true,
+      ellipsis: true,
+      valueType: 'select',
+      // statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0']
+      render: (_, record) => (
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        <Tag color={statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0'].color}>
+          {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
+          {statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0'].text}
+        </Tag>
+      ),
+      valueEnum: {
+        all: { text: '超长'.repeat(50) },
+        open: {
+          text: '未解决',
+          status: 'Error',
+        },
+        closed: {
+          text: '已解决',
+          status: 'Success',
+          disabled: true,
+        },
+        processing: {
+          text: '解决中',
+          status: 'Processing',
+        },
       },
     },
     {
       title: '操作',
-      dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
+      key: 'option',
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      render: (text, record: API.TaskVO, _, action) => [
+        // eslint-disable-next-line react/jsx-key
+        <Button
+          type="primary"
+          onClick={async () => {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            setOpen(true);
+            const hotNewTitle = record?.hotNewTitle;
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            setArtidleTitle(hotNewTitle);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const res = await modelGenerationInTouTiaoUsingPost({
+              title: record.hotNewTitle,
+              hotURL: record.hotUrl,
+            });
+            if (res.code === 0) {
+              const data = res.data;
+              const map = new Map<string, string>();
+              map.set('hotNewsTitle', data?.hotNewsTitle);
+              map.set('editing_1', data?.editing_1);
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              if (data?.editing_2) {
+                map.set('editing_2', data?.editing_2);
+              }
+              if (data?.editing_3) {
+                map.set('editing_3', data?.editing_3);
+              }
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              setArticle(map);
+            }
+            setTimeout(() => {
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              setLoading(false);
+            }, 5000);
           }}
         >
-          配置
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          订阅警报
-        </a>,
+          查 看
+        </Button>,
+        // eslint-disable-next-line react/jsx-key
+        <Button type="primary">生 成</Button>,
+        // eslint-disable-next-line react/jsx-key
+        <Button type="primary" danger>
+          取 消
+        </Button>,
       ],
     },
   ];
-  return (
-    <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
-        headerTitle={'查询表格'}
-        actionRef={actionRef}
-        rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-        request={rule}
-        columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
-      />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{' '}
-              <a
-                style={{
-                  fontWeight: 600,
-                }}
-              >
-                {selectedRowsState.length}
-              </a>{' '}
-              项 &nbsp;&nbsp;
-              <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            批量删除
-          </Button>
-          <Button type="primary">批量审批</Button>
-        </FooterToolbar>
-      )}
-      <ModalForm
-        title={'新建规则'}
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.RuleListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: '规则名称为必填项',
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
-      <UpdateForm
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalOpen(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
-        }}
-        updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
+  const statusMap = {
+    0: {
+      color: 'blue',
+      text: '已配置',
+    },
+    1: {
+      color: 'green',
+      text: '已生产',
+    },
+    2: {
+      color: 'volcano',
+      text: '处理中',
+    },
+    3: {
+      color: 'red',
+      text: '失败',
+    },
+    4: {
+      color: '',
+      text: '未完成',
+    },
+  };
 
-      <Drawer
-        width={600}
-        open={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
+  const actionRef = useRef<ActionType>();
+  const [thirdPartyAccount, setThirdPartyAccount] = useState<API.ThirdPartyAccountVO[]>([]);
+
+  //打开对话框
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [article, setArticle] = useState<Map<string, string>>(new Map<string, string>());
+  const [articleTitle, setArtidleTitle] = useState<string>('');
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    accountlist();
+  }, []);
+  const accountlist = async () => {
+    const res = await getThirdPartyAccountListUsingGet();
+    if (res.code === 0 && res.data) {
+      setThirdPartyAccount(res.data);
+    }
+  };
+  return (
+    <div
+      style={{
+        backgroundColor: 'hsl(218,22%,7%)',
+      }}
+    >
+      <ConfigProvider>
+        <ProTable<API.TaskVO>
+          columns={columns}
+          actionRef={actionRef}
+          // cardBordered
+          request={async (params, sort, filter) => {
+            const res = await listUsingGet1({
+              pageSize: params.pageSize,
+              pageCurrent: params.current,
+              ...filter,
+            });
+            const records = res.data?.records;
+            return {
+              data: records,
+              success: true,
+              total: res?.total,
+            };
+          }}
+          expandable={{
+            expandedRowRender(record) {
+              console.log('record', record);
+              if (record.platFormAccount === null || record.platFormAccount === '') {
+                return expandedRowRender(thirdPartyAccount, record, actionRef);
+              }
+            },
+          }}
+          rowKey="id"
+          search={{
+            labelWidth: 'auto',
+          }}
+          options={{
+            setting: {
+              listsHeight: 400,
+            },
+          }}
+          dateFormatter="string"
+        />
+      </ConfigProvider>
+
+      <ArticleModal
+        title={articleTitle}
+        loading={loading}
+        open={open}
+        onCancel={() => {
+          setLoading(false);
+          setOpen(false);
+          setArtidleTitle('');
+          setArticle(new Map<string, string>());
         }}
-        closable={false}
-      >
-        {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
-            column={2}
-            title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
-          />
-        )}
-      </Drawer>
-    </PageContainer>
+        values={article}
+      />
+    </div>
   );
 };
-export default TableList;
