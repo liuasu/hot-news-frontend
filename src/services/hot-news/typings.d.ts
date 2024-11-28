@@ -1,4 +1,10 @@
 declare namespace API {
+  type AccountCentreVO = {
+    count?: number;
+    name?: string;
+    thirdPartyAccountVOList?: ThirdPartyAccountVO[];
+  };
+
   type BaseResponseBoolean_ = {
     code?: number;
     currentDateTime?: DateTime;
@@ -11,6 +17,14 @@ declare namespace API {
     code?: number;
     currentDateTime?: DateTime;
     data?: HotApiVO;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponseListAccountCentreVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: AccountCentreVO[];
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -142,6 +156,11 @@ declare namespace API {
     id?: number;
   };
 
+  type deleteUsingPOSTParams = {
+    /** id */
+    id: number;
+  };
+
   type Duration = {
     nano?: number;
     negative?: boolean;
@@ -151,11 +170,6 @@ declare namespace API {
   };
 
   type editUsingPOST1Params = {
-    /** id */
-    id: number;
-  };
-
-  type editUsingPOST3Params = {
     /** id */
     id: number;
   };
@@ -327,7 +341,7 @@ declare namespace API {
   };
 
   type TaskVO = {
-    hotNewTitle: string;
+    hotNewTitle?: string;
     hotPlatForm?: string;
     hotUrl?: string;
     id?: number;
@@ -342,6 +356,16 @@ declare namespace API {
     duration?: Duration;
     durationEstimated?: boolean;
     timeBased?: boolean;
+  };
+
+  type ThirdPartyAccountAddReq = {
+    thirdPartyFormName?: string;
+  };
+
+  type ThirdPartyAccountDelReq = {
+    account?: string;
+    index?: number;
+    thirdPartyFormName?: string;
   };
 
   type ThirdPartyAccountVO = {

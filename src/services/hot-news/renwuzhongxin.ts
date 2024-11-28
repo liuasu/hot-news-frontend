@@ -1,11 +1,11 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** 删除任务中心 POST /api/task/${param0} */
-export async function editUsingPost3(
+export async function deleteUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.editUsingPOST3Params,
+  params: API.deleteUsingPOSTParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -58,12 +58,8 @@ export async function modelGenerationInTouTiaoUsingPost(
 /** 查询任务中心列表 GET /api/task/list */
 export async function listUsingGet1(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: {
-    [p: string]: (string | number)[] | null;
-    pageSize: number | undefined;
-    pageCurrent: number | undefined;
-  },
-  options?: { [p: string]: any },
+  params: API.listUsingGET1Params,
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTaskVO_>('/api/task/list', {
     method: 'GET',

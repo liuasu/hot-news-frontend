@@ -20,6 +20,7 @@ export default [
     ],
   },
   { name: '任务中心', icon: 'table', path: '/task', component: './TableList' },
+  { name: '账号中心', path: '/user/account/centre', component: './User/AccountCentre' },
   { path: '/', redirect: '/index' },
   { path: '*', layout: false, component: './404' },
 ];

@@ -1,4 +1,4 @@
-import { Divider, Modal, Skeleton } from 'antd';
+import { Divider, Modal, Result, Skeleton } from 'antd';
 import React from 'react';
 
 const App: React.FC<{
@@ -24,8 +24,15 @@ const App: React.FC<{
 
         {values.has('editing_1') && (
           <>
-            <Divider orientation="left">文章1</Divider>
-            <p>{values.get('editing_1')}</p>
+            {/* eslint-disable-next-line eqeqeq */}
+            {values.get('editing_1') != null ? (
+              <>
+                <Divider orientation="left">文章1</Divider>
+                <p>{values.get('editing_1')}</p>
+              </>
+            ) : (
+              <Result status="success" title="暂无相关文章" />
+            )}
           </>
         )}
 

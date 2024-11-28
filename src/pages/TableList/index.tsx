@@ -1,5 +1,6 @@
 import ArticleModal from '@/components/ArticleModal';
 import {
+  deleteUsingPost,
   editUsingPost2,
   listUsingGet1,
   modelGenerationInTouTiaoUsingPost,
@@ -7,7 +8,7 @@ import {
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, ConfigProvider, Tag } from 'antd';
+import { Button, ConfigProvider, message, Tag } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 const expandedRowRender = (
@@ -77,7 +78,6 @@ export default () => {
       tooltip: '标题过长会自动收缩',
       valueType: 'select',
       valueEnum: {
-        all: { text: '超长'.repeat(50) },
         open: {
           text: '未解决',
           status: 'Error',
@@ -91,6 +91,16 @@ export default () => {
           text: '解决中',
           status: 'Processing',
         },
+      },
+      render: (text, record) => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const matchedItem = thirdPartyAccount.find(
+          (item) => item.account === record.platFormAccount,
+        );
+        if (matchedItem) {
+          return matchedItem.userName;
+        }
+        return null; // 或者你可以返回一个默认值
       },
     },
     {
@@ -193,7 +203,19 @@ export default () => {
         // eslint-disable-next-line react/jsx-key
         <Button type="primary">生 成</Button>,
         // eslint-disable-next-line react/jsx-key
-        <Button type="primary" danger>
+        <Button
+          type="primary"
+          danger
+          onClick={async () => {
+            const res = await deleteUsingPost({
+              id: record.id,
+            } as API.deleteUsingPOSTParams);
+            if (res.code === 0) {
+              message.success('取消改任务配置');
+              action?.reload();
+            }
+          }}
+        >
           取 消
         </Button>,
       ],
@@ -267,7 +289,6 @@ export default () => {
           }}
           expandable={{
             expandedRowRender(record) {
-              console.log('record', record);
               if (record.platFormAccount === null || record.platFormAccount === '') {
                 return expandedRowRender(thirdPartyAccount, record, actionRef);
               }
