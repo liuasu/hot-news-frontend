@@ -1,11 +1,12 @@
 import {
+  addThirdPartyAccountListUsingPost,
   delThirdPartyAccountUsingPost,
   getThirdPartyAccountListByAccountCentreUsingGet,
 } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, ConfigProvider, message } from 'antd';
-import React, { useRef } from 'react';
+import { Button, ConfigProvider, message, Spin } from 'antd';
+import React, { useRef, useState } from 'react';
 
 const expandedRowRender = (data: API.AccountCentreVO[], actionRef: React.RefObject<ActionType>) => {
   return (
@@ -62,17 +63,19 @@ const expandedRowRender = (data: API.AccountCentreVO[], actionRef: React.RefObje
   );
 };
 
-export type PlatFormVO = {
-  platFormName: string;
-  platFormAccountCount: number;
-};
-
 export default () => {
   const columns: ProColumns<API.AccountCentreVO>[] = [
     {
       title: '平台',
       dataIndex: 'name',
       valueType: 'text',
+      render: (text, record) => {
+        if (record.name === 'toutiao') {
+          return '今日头条';
+        } else if (record.name === 'baijia') {
+          return '百家';
+        }
+      },
     },
     {
       title: '账号数量',
@@ -82,10 +85,47 @@ export default () => {
     {
       dataIndex: 'thirdPartyAccountVOList',
     },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      key: 'operation',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, index) => [
+        <Button
+          type="primary"
+          onClick={async () => {
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              setSpinning(true);
+              const res = await addThirdPartyAccountListUsingPost({
+                thirdPartyFormName: record.name,
+              });
+              if (res.code === 0 && res.data) {
+                message.success('账号添加成功');
+              } else {
+                message.error('账号添加失败');
+              }
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              setSpinning(false);
+            } catch (e) {
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              setSpinning(false);
+              message.success(e.message);
+            }
+          }}
+        >
+          添加账号
+        </Button>,
+      ],
+    },
   ];
+
+  // <Button onClick={}>Display a loading indicator</Button>
 
   const actionRef = useRef<ActionType>();
 
+  const [spinning, setSpinning] = useState(false);
   return (
     <div
       style={{
@@ -121,6 +161,7 @@ export default () => {
           dateFormatter="string"
         />
       </ConfigProvider>
+      <Spin spinning={spinning} fullscreen />
     </div>
   );
 };

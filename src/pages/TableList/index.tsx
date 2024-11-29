@@ -167,35 +167,40 @@ export default () => {
         <Button
           type="primary"
           onClick={async () => {
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            setOpen(true);
-            const hotNewTitle = record?.hotNewTitle;
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            setArtidleTitle(hotNewTitle);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const res = await modelGenerationInTouTiaoUsingPost({
-              title: record.hotNewTitle,
-              hotURL: record.hotUrl,
-            });
-            if (res.code === 0) {
-              const data = res.data;
-              const map = new Map<string, string>();
-              map.set('hotNewsTitle', data?.hotNewsTitle);
-              map.set('editing_1', data?.editing_1);
+            const map = new Map<string, string>();
+            try {
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              if (data?.editing_2) {
-                map.set('editing_2', data?.editing_2);
-              }
-              if (data?.editing_3) {
-                map.set('editing_3', data?.editing_3);
-              }
+              setOpen(true);
+              const hotNewTitle = record?.hotNewTitle;
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              setArticle(map);
-            }
-            setTimeout(() => {
+              setArtidleTitle(hotNewTitle);
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const res = await modelGenerationInTouTiaoUsingPost({
+                title: record.hotNewTitle,
+                hotURL: record.hotUrl,
+              });
+              if (res.code === 0) {
+                const data = res.data;
+                map.set('hotNewsTitle', data?.hotNewsTitle);
+                map.set('editing_1', data?.editing_1);
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                if (data?.editing_2) {
+                  map.set('editing_2', data?.editing_2);
+                }
+                if (data?.editing_3) {
+                  map.set('editing_3', data?.editing_3);
+                }
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                setArticle(map);
+              }
+              setTimeout(() => {
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                setLoading(false);
+              }, 5000);
+            } catch (e) {
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               setLoading(false);
-            }, 5000);
+            }
           }}
         >
           查 看

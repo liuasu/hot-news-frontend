@@ -4,7 +4,7 @@ import '@umijs/max';
 import { Alert, Card, Typography } from 'antd';
 import React from 'react';
 
-export const Admin: React.FC = () => {
+const Index: React.FC = () => {
   return (
     <PageContainer content={' 这个页面只有 admin 权限才能查看'}>
       <Card>
@@ -42,4 +42,4 @@ export const Admin: React.FC = () => {
     </PageContainer>
   );
 };
-// export default Admin;
+export default Index;

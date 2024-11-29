@@ -1,10 +1,10 @@
 import { AvatarDropdown, AvatarName, Footer } from '@/components';
+import { errorConfig } from '@/requestConfig';
 import { getLoginUserUsingGet } from '@/services/hot-news/userController';
 import { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { SettingDrawer } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from './requestConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -122,6 +122,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 export const request = {
   ...errorConfig,
   baseURL: 'http://localhost:8101',
-  timeout: 5000,
+  timeout: 10000,
   withCredentials: true,
 };
