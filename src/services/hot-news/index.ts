@@ -8,7 +8,6 @@ import * as redianxinxijiekoude from './redianxinxijiekoude';
 import * as renwuzhongxin from './renwuzhongxin';
 import * as userController from './userController';
 import * as zhanghaozhongxin from './zhanghaozhongxin';
-
 export default {
   fileController,
   redianxinxijiekoude,

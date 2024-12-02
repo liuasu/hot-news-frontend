@@ -2,29 +2,28 @@ import { addUsingPost1 } from '@/services/hot-news/renwuzhongxin';
 import { RedoOutlined } from '@ant-design/icons';
 import { Button, Card, Image, List, message, Popover } from 'antd';
 import VirtualList from 'rc-virtual-list';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const calculateTimeDifference = (timestamp) => {
-  const currentTime = Date.now();
-  const difference = currentTime - new Date(timestamp);
+const calculateTimeDifference = (timestamp: Date) => {
+  const currentTime = new Date().getTime();
+  const targetTime = new Date(timestamp).getTime();
+  const difference = currentTime - targetTime;
 
-  const seconds = Math.floor(difference / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const months = Math.floor(days / 30);
-  const years = Math.floor(days / 365);
+  // 定义时间单位（毫秒）
+  const SECOND = 1000;
+  const MINUTE = 60 * SECOND;
+  const HOUR = 60 * MINUTE;
+  const DAY = 24 * HOUR;
 
-  if (years > 0) {
-    return `${years} 年前`;
-  } else if (months > 0) {
-    return `${months} 个月前`;
-  } else if (days > 0) {
-    return `${days} 天前`;
-  } else if (hours > 0) {
-    return `${hours} 小时前`;
-  } else if (minutes > 0) {
-    return `${minutes} 分钟前`;
+  // 计算时间差
+  if (difference < MINUTE) {
+    return '刚刚';
+  } else if (difference < HOUR) {
+    const minutes = Math.floor(difference / MINUTE);
+    return `${minutes}分钟前`;
+  } else if (difference < DAY) {
+    const hours = Math.floor(difference / HOUR);
+    return `${hours}小时前`;
   }
 };
 
@@ -33,29 +32,61 @@ export const HotNewsCar: React.FC<{
   platFormURL: string;
   hotList: API.HotNewsVO[];
   updateTime: Date;
-}> = ({ platFormName, platFormURL, hotList, updateTime }) => {
+  fetchData: () => API.HotNewsVO[];
+}> = ({ platFormName, platFormURL, hotList, updateTime, fetchData }) => {
+  const [data, setData] = useState<API.HotNewsVO[]>([]);
+  const [DateTime, setDateTime] = useState<Date>();
+  const [refresh, setRefresh] = useState(false);
+  useEffect(() => {
+    const loading = async () => {
+      const res = await fetchData();
+      if (res.code === 0) {
+        setData(res.data);
+        setDateTime(res.currentDateTime);
+        message.success('刷新成功');
+      } else {
+        message.error('刷新失败');
+      }
+    };
+    if (refresh) {
+      loading();
+      setRefresh(false);
+    }
+  }, [fetchData, refresh]);
+
+  const newVar = refresh ? DateTime : updateTime;
+
   return (
     <div>
       <Card
         title={
           <>
             <Image preview={false} style={{ width: 25, height: 25 }} src={platFormURL} />
+            <span />
             <span> {platFormName}</span>
           </>
         }
         extra={'热门榜'}
-        style={{ width: 350 }}
+        style={{ width: 300 }}
         actions={[
           // eslint-disable-next-line react/jsx-key
-          <span>{calculateTimeDifference(updateTime)}刚刚更新</span>,
+          <span>{calculateTimeDifference(newVar as Date)}更新</span>,
           // eslint-disable-next-line react/jsx-key
-          <Button type="primary" shape="circle" icon={<RedoOutlined />} onClick={() => {}} />,
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<RedoOutlined />}
+            onClick={() => {
+              setRefresh(true);
+            }}
+          />,
         ]}
         bordered={true}
+        loading={refresh}
       >
         <List split={false}>
           <VirtualList
-            data={hotList}
+            data={refresh ? data : hotList}
             height={250}
             itemHeight={20}
             disabled={true}

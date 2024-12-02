@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** 按id获取热点信息接口地 GET /api/hotApi/${param0} */
 export async function findHotApiByIdUsingGet(

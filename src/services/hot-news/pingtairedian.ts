@@ -18,6 +18,14 @@ export async function dyHotNewsUsingGet(options?: { [key: string]: any }) {
   });
 }
 
+/** 澎湃热点 GET /api/hot_new/thepaper */
+export async function thePaPerHotNewsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/thepaper', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 头条热点 GET /api/hot_new/toutiao */
 export async function touTiaoHotNewsUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/toutiao', {

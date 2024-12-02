@@ -318,6 +318,11 @@ declare namespace API {
     total?: number;
   };
 
+  type queryThirdPartyAccountUsingGETParams = {
+    thirdPartyFormName?: string;
+    userIdStr?: string;
+  };
+
   type TaskAddReq = {
     /** 热点标题 */
     hotNewTitle?: string;

@@ -2,6 +2,7 @@ import {
   addThirdPartyAccountListUsingPost,
   delThirdPartyAccountUsingPost,
   getThirdPartyAccountListByAccountCentreUsingGet,
+  queryThirdPartyAccountUsingGet,
 } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
@@ -31,7 +32,17 @@ const expandedRowRender = (data: API.AccountCentreVO[], actionRef: React.RefObje
 
           render: (text, record, index) => [
             // eslint-disable-next-line react/jsx-key
-            <Button type="primary">查看数据</Button>,
+            <Button
+              type="primary"
+              onClick={async () => {
+                await queryThirdPartyAccountUsingGet({
+                  userIdStr: record.account,
+                  thirdPartyFormName: data.name,
+                });
+              }}
+            >
+              查看数据
+            </Button>,
             // eslint-disable-next-line react/jsx-key
             <Button
               type="primary"
@@ -113,6 +124,8 @@ export default () => {
               setSpinning(false);
               message.success(e.message);
             }
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            actionRef.current?.reset?.();
           }}
         >
           添加账号

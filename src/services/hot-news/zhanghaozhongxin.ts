@@ -27,7 +27,7 @@ export async function addThirdPartyAccountListUsingPost(
   });
 }
 
-/** 账号登录 POST /api/third-party/del */
+/** 账号删除 POST /api/third-party/del */
 export async function delThirdPartyAccountUsingPost(
   body: API.ThirdPartyAccountDelReq,
   options?: { [key: string]: any },
@@ -46,6 +46,21 @@ export async function delThirdPartyAccountUsingPost(
 export async function getThirdPartyAccountListUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListThirdPartyAccountVO_>('/api/third-party/list', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 查看账号 GET /api/third-party/query */
+export async function queryThirdPartyAccountUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.queryThirdPartyAccountUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/third-party/query', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
     ...(options || {}),
   });
 }
