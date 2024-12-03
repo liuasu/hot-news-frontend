@@ -3,6 +3,7 @@ import {
   biLiBiLiHotNewsUsingGet,
   dyHotNewsUsingGet,
   thePaPerHotNewsUsingGet,
+  thirtySixKrHotNewsUsingGet,
   touTiaoHotNewsUsingGet,
 } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
@@ -60,11 +61,25 @@ const Index: React.FC = () => {
     }
     return [] as API.HotNewsVO[];
   };
+
+  // 36ke 热门新闻
+  const [thirtySixHotList, setThirtySixHotList] = useState<API.HotNewsVO[]>([]);
+  const [thirtySixDateTime, sethirtySixDateTime] = useState<Date>();
+  const thirtySixHosts = async () => {
+    const res = await thirtySixKrHotNewsUsingGet();
+    if (res.code === 0 && res.data) {
+      setThirtySixHotList(res.data);
+      sethirtySixDateTime(res.currentDateTime);
+      return res;
+    }
+    return [] as API.HotNewsVO[];
+  };
   useEffect(() => {
     bilibiliHosts();
     dyHosts();
     touTiaoHosts();
     thePaPerHosts();
+    thirtySixHosts();
   }, []);
 
   return (
@@ -82,7 +97,8 @@ const Index: React.FC = () => {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: 30,
+            gap: 20,
+            padding: '0 6vw 0',
           }}
         >
           <HotNewsCar
@@ -94,6 +110,7 @@ const Index: React.FC = () => {
             updateTime={bilibiliDateTime as Date}
             fetchData={bilibiliHosts}
           />
+
           <HotNewsCar
             platFormName={'抖音'}
             platFormURL={
@@ -103,6 +120,7 @@ const Index: React.FC = () => {
             updateTime={dyDateTime as Date}
             fetchData={dyHosts}
           />
+
           <HotNewsCar
             platFormName={'今日头条'}
             platFormURL={
@@ -120,6 +138,16 @@ const Index: React.FC = () => {
             hotList={thePaPerHotList}
             updateTime={thePaPerDateTime as Date}
             fetchData={thePaPerHosts}
+          />
+
+          <HotNewsCar
+            platFormName={'36氪'}
+            platFormURL={
+              'https://s1.aigei.com/src/img/png/25/25c51ce70f264a30a54ada7b2618ef99.png?imageMogr2/auto-orient/thumbnail/!132x132r/gravity/Center/crop/132x132/quality/85/%7CimageView2/2/w/132&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:W7Qm1G5Hw3RE-MgRhEHTd110t2w='
+            }
+            hotList={thirtySixHotList}
+            updateTime={thirtySixDateTime as Date}
+            fetchData={thirtySixHosts}
           />
         </div>
       </div>

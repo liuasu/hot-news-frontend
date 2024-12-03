@@ -26,6 +26,14 @@ export async function thePaPerHotNewsUsingGet(options?: { [key: string]: any }) 
   });
 }
 
+/** 36氪热点 GET /api/hot_new/thirtysix */
+export async function thirtySixKrHotNewsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/thirtysix', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 头条热点 GET /api/hot_new/toutiao */
 export async function touTiaoHotNewsUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/toutiao', {
