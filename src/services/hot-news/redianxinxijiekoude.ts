@@ -17,9 +17,9 @@ export async function findHotApiByIdUsingGet(
 }
 
 /** 删除热点信息接口地 POST /api/hotApi/${param0} */
-export async function editUsingPost1(
+export async function editUsingPost3(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.editUsingPOST1Params,
+  params: API.editUsingPOST3Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -31,7 +31,7 @@ export async function editUsingPost1(
 }
 
 /** 添加热点信息接口地 POST /api/hotApi/add */
-export async function addUsingPost(body: API.HotApiAddReq, options?: { [key: string]: any }) {
+export async function addUsingPost1(body: API.HotApiAddReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/hotApi/add', {
     method: 'POST',
     headers: {
@@ -43,7 +43,7 @@ export async function addUsingPost(body: API.HotApiAddReq, options?: { [key: str
 }
 
 /** 修改热点信息接口地 POST /api/hotApi/edit */
-export async function editUsingPost(body: API.HotApiEditReq, options?: { [key: string]: any }) {
+export async function editUsingPost2(body: API.HotApiEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/hotApi/edit', {
     method: 'POST',
     headers: {
@@ -87,7 +87,7 @@ export async function excelAddUsingPost(body: {}, file?: File, options?: { [key:
 }
 
 /** 查询热点信息接口地列表 GET /api/hotApi/list */
-export async function listUsingGet(body: API.HotApiQueryReq, options?: { [key: string]: any }) {
+export async function listUsingGet1(body: API.HotApiQueryReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotApiVO_>('/api/hotApi/list', {
     method: 'GET',
     headers: {

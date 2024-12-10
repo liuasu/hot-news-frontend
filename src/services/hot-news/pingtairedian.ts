@@ -18,6 +18,14 @@ export async function dyHotNewsUsingGet(options?: { [key: string]: any }) {
   });
 }
 
+/** 腾讯新闻热点 GET /api/hot_new/qq_news */
+export async function qqNewsHotNewsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/qq_news', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 澎湃热点 GET /api/hot_new/thepaper */
 export async function thePaPerHotNewsUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/thepaper', {
@@ -37,6 +45,14 @@ export async function thirtySixKrHotNewsUsingGet(options?: { [key: string]: any 
 /** 头条热点 GET /api/hot_new/toutiao */
 export async function touTiaoHotNewsUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/toutiao', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 网易热点 GET /api/hot_new/wangyi */
+export async function wangYiHotNewsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListHotNewsVO_>('/api/hot_new/wangyi', {
     method: 'GET',
     ...(options || {}),
   });

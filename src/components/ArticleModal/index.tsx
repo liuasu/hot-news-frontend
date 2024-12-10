@@ -13,41 +13,31 @@ const App: React.FC<{
       <Modal
         width={800}
         title={<p>{title}</p>}
-        loading={loading}
         open={open}
         onCancel={() => {
           onCancel();
         }}
         footer={null}
+        maskClosable={false}
       >
-        {values.size === 0 && <Skeleton />}
-
-        {values.has('editing_1') && (
-          <>
-            {/* eslint-disable-next-line eqeqeq */}
-            {values.get('editing_1') != null ? (
-              <>
-                <Divider orientation="left">文章1</Divider>
-                <p>{values.get('editing_1')}</p>
-              </>
-            ) : (
-              <Result status="success" title="暂无相关文章" />
-            )}
-          </>
-        )}
-
-        {values.has('editing_2') && (
-          <>
-            <Divider>文章2</Divider>
-            <p>{values.get('editing_2')}</p>
-          </>
-        )}
-
-        {values.has('editing_3') && (
-          <>
-            <Divider orientation="right">文章3</Divider>
-            <p>{values.get('editing_3')}</p>
-          </>
+        {loading ? (
+          // 加载状态显示骨架屏
+          <Skeleton active paragraph={{ rows: 4 }} />
+        ) : (
+          // 非加载状态显示内容
+          Array.from(values.keys()).map((key) => (
+            <div key={key}>
+              {values.get(key) != null ? (
+                <>
+                  <Divider orientation="left">文章1</Divider>
+                  <h3>《{values.get(key)?.title}》</h3>
+                  <p>{values.get(key)?.conText}</p>
+                </>
+              ) : (
+                <Result status="success" title="暂无相关文章" />
+              )}
+            </div>
+          ))
         )}
       </Modal>
     </>

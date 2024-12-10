@@ -1,9 +1,11 @@
 import ArticleModal from '@/components/ArticleModal';
+import { hotNewsMap, platFormAccountMap, statusMap } from '@/pages/Utils/utils';
+import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
 import {
   deleteUsingPost,
-  editUsingPost2,
-  listUsingGet1,
-  modelGenerationInTouTiaoUsingPost,
+  editUsingPost6,
+  hotNewsQueryArticlesUsingPost,
+  listUsingGet3,
 } from '@/services/hot-news/renwuzhongxin';
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -21,7 +23,14 @@ const expandedRowRender = (
       columns={[
         { title: '昵称', dataIndex: 'userName', valueType: 'text' },
         { title: '账号', dataIndex: 'account', valueType: 'text' },
-        { title: '平台', dataIndex: 'platForm', valueType: 'text' },
+        {
+          title: '平台',
+          dataIndex: 'platForm',
+          valueType: 'text',
+          render: (text, record) => {
+            return platFormAccountMap[record.platForm].text;
+          },
+        },
         {
           title: '是否过期',
           dataIndex: 'isDisabled',
@@ -40,9 +49,10 @@ const expandedRowRender = (
             <a
               onClick={async () => {
                 console.log(record);
-                const res = await editUsingPost2({
+                const res = await editUsingPost6({
                   id: task.id,
                   platFormAccount: record.account,
+                  platForm: record.platForm,
                 });
                 if (res.code === 0) {
                   actionRef.current?.reload(); // 使用 actionRef 刷新表格
@@ -74,24 +84,10 @@ export default () => {
     {
       title: '账号',
       dataIndex: 'platFormAccount',
-      filters: true,
-      tooltip: '标题过长会自动收缩',
       valueType: 'select',
-      valueEnum: {
-        open: {
-          text: '未解决',
-          status: 'Error',
-        },
-        closed: {
-          text: '已解决',
-          status: 'Success',
-          disabled: true,
-        },
-        processing: {
-          text: '解决中',
-          status: 'Processing',
-        },
-      },
+      width: 200,
+      valueEnum: platFormAccountMap, // 使用 valueEnum 进行筛选
+
       render: (text, record) => {
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         const matchedItem = thirdPartyAccount.find(
@@ -104,58 +100,60 @@ export default () => {
       },
     },
     {
+      title: '账号平台',
+      ellipsis: true,
+      search: false,
+      render: (text, record) => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const matchedItem = thirdPartyAccount.find(
+          (item) => item.account === record.platFormAccount,
+        );
+        if (matchedItem) {
+          return platFormAccountMap[matchedItem.platForm].text;
+        }
+        return null; // 或者你可以返回一个默认值
+      },
+    },
+    {
       title: '任务名称',
       dataIndex: 'taskName',
       ellipsis: true,
       search: false,
-      tooltip: '标题过长会自动收缩',
     },
     {
       title: '标题',
       dataIndex: 'hotNewTitle',
       ellipsis: true,
       search: false,
-      tooltip: '标题过长会自动收缩',
     },
     {
       title: '热点平台',
       dataIndex: 'hotPlatForm',
       search: false,
-      tooltip: '标题过长会自动收缩',
+
+      render: (text, record) => {
+        return hotNewsMap[record.hotPlatForm];
+      },
     },
 
     {
       disable: true,
       title: '状态',
       dataIndex: 'taskStatus',
-      filters: true,
       onFilter: true,
       ellipsis: true,
       valueType: 'select',
+      width: 100,
       // statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0']
       render: (_, record) => (
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        <Tag color={statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0'].color}>
+        <Tag color={statusMap[record.taskStatus].color}>
           {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
-          {statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0'].text}
+          {statusMap[record.taskStatus].text}
+          {/*{statusMap[(Math.floor(record.taskStatus * 10) % 5) + ''].text}*/}
         </Tag>
       ),
-      valueEnum: {
-        all: { text: '超长'.repeat(50) },
-        open: {
-          text: '未解决',
-          status: 'Error',
-        },
-        closed: {
-          text: '已解决',
-          status: 'Success',
-          disabled: true,
-        },
-        processing: {
-          text: '解决中',
-          status: 'Processing',
-        },
-      },
+      valueEnum: statusMap,
     },
     {
       title: '操作',
@@ -171,17 +169,17 @@ export default () => {
             try {
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               setOpen(true);
-              const hotNewTitle = record?.hotNewTitle;
+              const hotNewTitle: any = record?.hotNewTitle;
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               setArtidleTitle(hotNewTitle);
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const res = await modelGenerationInTouTiaoUsingPost({
+              const res = await hotNewsQueryArticlesUsingPost({
                 title: record.hotNewTitle,
                 hotURL: record.hotUrl,
-              });
+                platformName: record.hotPlatForm,
+              } as API.ProductionArticleAddReq1);
               if (res.code === 0) {
                 const data = res.data;
-                map.set('hotNewsTitle', data?.hotNewsTitle);
                 map.set('editing_1', data?.editing_1);
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 if (data?.editing_2) {
@@ -206,11 +204,38 @@ export default () => {
           查 看
         </Button>,
         // eslint-disable-next-line react/jsx-key
-        <Button type="primary">生 成</Button>,
+        <Button
+          type="primary"
+          disabled={record.taskStatus === 1}
+          onClick={async () => {
+            if (record.platFormAccount === null) {
+              message.error('请先选择平台账号');
+            }
+            try {
+              const res = await productionArticleUsingPost({
+                aiPlatForm: 'xinghuo',
+                hotURL: record.hotUrl,
+                taskId: record.id,
+                thirdPartyFormName: record.hotPlatForm + 'Chrome',
+                title: record.hotNewTitle,
+                userIdStr: record.platFormAccount,
+              } as API.ProductionArticleAddReq);
+              if (res.code === 0) {
+                message.success('生成成功');
+                action?.reload();
+              }
+            } catch (e) {
+              message.error('生成失败');
+            }
+          }}
+        >
+          生 成
+        </Button>,
         // eslint-disable-next-line react/jsx-key
         <Button
           type="primary"
           danger
+          disabled={record.taskStatus === 1}
           onClick={async () => {
             const res = await deleteUsingPost({
               id: record.id,
@@ -226,28 +251,6 @@ export default () => {
       ],
     },
   ];
-  const statusMap = {
-    0: {
-      color: 'blue',
-      text: '已配置',
-    },
-    1: {
-      color: 'green',
-      text: '已生产',
-    },
-    2: {
-      color: 'volcano',
-      text: '处理中',
-    },
-    3: {
-      color: 'red',
-      text: '失败',
-    },
-    4: {
-      color: '',
-      text: '未完成',
-    },
-  };
 
   const actionRef = useRef<ActionType>();
   const [thirdPartyAccount, setThirdPartyAccount] = useState<API.ThirdPartyAccountVO[]>([]);
@@ -278,13 +281,13 @@ export default () => {
         <ProTable<API.TaskVO>
           columns={columns}
           actionRef={actionRef}
-          // cardBordered
-          request={async (params, sort, filter) => {
-            const res = await listUsingGet1({
+          request={async (params) => {
+            const res = await listUsingGet3({
               pageSize: params.pageSize,
               pageCurrent: params.current,
-              ...filter,
-            });
+              platForm: params.platFormAccount,
+              taskStatus: params.taskStatus,
+            } as API.listUsingGET3Params);
             const records = res.data?.records;
             return {
               data: records,

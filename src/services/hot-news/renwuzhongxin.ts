@@ -17,7 +17,7 @@ export async function deleteUsingPost(
 }
 
 /** 添加任务中心 POST /api/task/add */
-export async function addUsingPost1(body: API.TaskAddReq, options?: { [key: string]: any }) {
+export async function addUsingPost3(body: API.TaskAddReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/task/add', {
     method: 'POST',
     headers: {
@@ -29,7 +29,7 @@ export async function addUsingPost1(body: API.TaskAddReq, options?: { [key: stri
 }
 
 /** 修改任务中心 POST /api/task/edit */
-export async function editUsingPost2(body: API.TaskEditReq, options?: { [key: string]: any }) {
+export async function editUsingPost6(body: API.TaskEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/task/edit', {
     method: 'POST',
     headers: {
@@ -40,25 +40,10 @@ export async function editUsingPost2(body: API.TaskEditReq, options?: { [key: st
   });
 }
 
-/** 文章生成(头条) POST /api/task/editing/toutiao */
-export async function modelGenerationInTouTiaoUsingPost(
-  body: API.HotNewsAddReq,
-  options?: { [key: string]: any },
-) {
-  return request<API.BaseResponseMapStringString_>('/api/task/editing/toutiao', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 查询任务中心列表 GET /api/task/list */
-export async function listUsingGet1(
+export async function listUsingGet3(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET1Params,
+  params: API.listUsingGET3Params,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTaskVO_>('/api/task/list', {
@@ -66,6 +51,21 @@ export async function listUsingGet1(
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+/** 查看热点相关文章 POST /api/task/query/article */
+export async function hotNewsQueryArticlesUsingPost(
+  body: API.ProductionArticleAddReq1,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseMapStringObject_>('/api/task/query/article', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

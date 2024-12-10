@@ -75,8 +75,8 @@ const Index: React.FC = () => {
     return [] as API.HotNewsVO[];
   };
   useEffect(() => {
-    bilibiliHosts();
-    dyHosts();
+    // bilibiliHosts();
+    // dyHosts();
     touTiaoHosts();
     thePaPerHosts();
     thirtySixHosts();
@@ -101,25 +101,25 @@ const Index: React.FC = () => {
             padding: '0 6vw 0',
           }}
         >
-          <HotNewsCar
-            platFormName={'bilibili'}
-            platFormURL={
-              'https://s1.aigei.com/prevfiles/63af4c866bbf47c0a1d35ba709a6fd66.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:bpWjbRBO6xnoCBxVTEYFWewma_c='
-            }
-            hotList={bilibiliHotList}
-            updateTime={bilibiliDateTime as Date}
-            fetchData={bilibiliHosts}
-          />
+          {/*<HotNewsCar*/}
+          {/*  platFormName={'bilibili'}*/}
+          {/*  platFormURL={*/}
+          {/*    'https://s1.aigei.com/prevfiles/63af4c866bbf47c0a1d35ba709a6fd66.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:bpWjbRBO6xnoCBxVTEYFWewma_c='*/}
+          {/*  }*/}
+          {/*  hotList={bilibiliHotList}*/}
+          {/*  updateTime={bilibiliDateTime as Date}*/}
+          {/*  fetchData={bilibiliHosts}*/}
+          {/*/>*/}
 
-          <HotNewsCar
-            platFormName={'抖音'}
-            platFormURL={
-              'https://s1.aigei.com/src/img/png/5b/5b26e982f0b34c47817d3b40c9bf2d1f.png?imageMogr2/auto-orient/thumbnail/!282x282r/gravity/Center/crop/282x282/quality/85/%7CimageView2/2/w/282&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:YCO6IvUtFIqf6x1hmy82VctIElo='
-            }
-            hotList={dyHotList}
-            updateTime={dyDateTime as Date}
-            fetchData={dyHosts}
-          />
+          {/*<HotNewsCar*/}
+          {/*  platFormName={'抖音'}*/}
+          {/*  platFormURL={*/}
+          {/*    'https://s1.aigei.com/src/img/png/5b/5b26e982f0b34c47817d3b40c9bf2d1f.png?imageMogr2/auto-orient/thumbnail/!282x282r/gravity/Center/crop/282x282/quality/85/%7CimageView2/2/w/282&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:YCO6IvUtFIqf6x1hmy82VctIElo='*/}
+          {/*  }*/}
+          {/*  hotList={dyHotList}*/}
+          {/*  updateTime={dyDateTime as Date}*/}
+          {/*  fetchData={dyHosts}*/}
+          {/*/>*/}
 
           <HotNewsCar
             platFormName={'今日头条'}

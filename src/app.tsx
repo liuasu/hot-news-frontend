@@ -122,6 +122,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 export const request = {
   ...errorConfig,
   baseURL: 'http://localhost:8101',
-  timeout: 10000,
+  // timeout: 10000,
   withCredentials: true,
 };

@@ -5,6 +5,46 @@ declare namespace API {
     thirdPartyAccountVOList?: ThirdPartyAccountVO[];
   };
 
+  type AiConfigAddReq = {
+    /** ai平台 */
+    aiPlatForm?: string;
+    /** apiKey */
+    apiKey?: string;
+    /** apiSecret */
+    apiSecret?: string;
+    /** appid */
+    appId?: string;
+  };
+
+  type AiConfigEditReq = {
+    /** ai平台 */
+    aiPlatForm?: string;
+    /** apiKey */
+    apiKey?: string;
+    /** apiSecret */
+    apiSecret?: string;
+    /** appid */
+    appId?: string;
+    /** id */
+    id?: number;
+  };
+
+  type AiConfigVO = {
+    aiPlatForm?: string;
+    apiKey?: string;
+    apiSecret?: string;
+    appId?: string;
+    id?: number;
+  };
+
+  type BaseResponseAiConfigVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: AiConfigVO;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
   type BaseResponseBoolean_ = {
     code?: number;
     currentDateTime?: DateTime;
@@ -29,6 +69,14 @@ declare namespace API {
     updateDateTime?: DateTime;
   };
 
+  type BaseResponseListAiConfigVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: AiConfigVO[];
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
   type BaseResponseListHotApiVO_ = {
     code?: number;
     currentDateTime?: DateTime;
@@ -41,6 +89,14 @@ declare namespace API {
     code?: number;
     currentDateTime?: DateTime;
     data?: HotNewsVO[];
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponseListPromptVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: PromptVO[];
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -69,7 +125,7 @@ declare namespace API {
     updateDateTime?: DateTime;
   };
 
-  type BaseResponseMapStringString_ = {
+  type BaseResponseMapStringObject_ = {
     code?: number;
     currentDateTime?: DateTime;
     data?: Record<string, any>;
@@ -174,6 +230,21 @@ declare namespace API {
     id: number;
   };
 
+  type editUsingPOST3Params = {
+    /** id */
+    id: number;
+  };
+
+  type editUsingPOST5Params = {
+    /** id */
+    id: number;
+  };
+
+  type findAiConfigByIdUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
   type findHotApiByIdUsingGETParams = {
     /** id */
     id: number;
@@ -227,15 +298,6 @@ declare namespace API {
     id?: number;
   };
 
-  type HotNewsAddReq = {
-    biId?: string;
-    hotDesc?: string;
-    hotURL?: string;
-    id?: number;
-    imageURL?: string;
-    title?: string;
-  };
-
   type HotNewsVO = {
     biId?: string;
     hotDesc?: string;
@@ -245,9 +307,9 @@ declare namespace API {
     title?: string;
   };
 
-  type listUsingGET1Params = {
+  type listUsingGET3Params = {
     /** 第三方账号平台 */
-    platFormAccount?: string;
+    platForm?: string;
     /** 任务状态 */
     taskStatus?: number;
     current?: number;
@@ -271,8 +333,6 @@ declare namespace API {
     userName?: string;
     userRole?: string;
   };
-
-  type MapStringString_ = true;
 
   type OrderItem = {
     asc?: boolean;
@@ -318,6 +378,45 @@ declare namespace API {
     total?: number;
   };
 
+  type ProductionArticleAddReq = {
+    aiPlatForm?: string;
+    hotURL?: string;
+    promptName?: string;
+    taskId?: string;
+    thirdHotPartyFormName?: string;
+    thirdPartyFormName?: string;
+    title?: string;
+    userIdStr?: string;
+  };
+
+  type ProductionArticleAddReq1 = {
+    hotURL?: string;
+    platformName?: string;
+    title?: string;
+  };
+
+  type PromptAddReq = {
+    /** 模板名称 */
+    promptName?: string;
+    /** 提示词模板 */
+    promptTemplate?: string;
+  };
+
+  type PromptEditReq = {
+    /** id */
+    id?: number;
+    /** 模板名称 */
+    promptName?: string;
+    /** 提示词模板 */
+    promptTemplate?: string;
+  };
+
+  type PromptVO = {
+    id?: number;
+    promptName?: string;
+    promptTemplate?: string;
+  };
+
   type queryThirdPartyAccountUsingGETParams = {
     thirdPartyFormName?: string;
     userIdStr?: string;
@@ -330,8 +429,6 @@ declare namespace API {
     hotPlatForm?: string;
     /** url */
     hotUrl?: string;
-    /** 第三方账号 */
-    platFormAccount?: string;
     /** 任务名称 */
     taskName?: string;
   };
@@ -339,10 +436,10 @@ declare namespace API {
   type TaskEditReq = {
     /** id */
     id?: number;
+    /** 第三方账号平台 */
+    platForm?: string;
     /** 第三方账号 */
     platFormAccount?: string;
-    /** 任务状态 */
-    taskStatus?: number;
   };
 
   type TaskVO = {
