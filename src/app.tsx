@@ -1,5 +1,4 @@
 import { AvatarDropdown, AvatarName, Footer } from '@/components';
-import { errorConfig } from '@/requestConfig';
 import { getLoginUserUsingGet } from '@/services/hot-news/userController';
 import { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -120,7 +119,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  ...errorConfig,
   baseURL: 'http://localhost:8101',
   // timeout: 10000,
   withCredentials: true,

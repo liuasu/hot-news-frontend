@@ -74,12 +74,40 @@ const Index: React.FC = () => {
     }
     return [] as API.HotNewsVO[];
   };
+
+  // 网易热点
+  const [wangYiHotList, setWangYiHotList] = useState<API.HotNewsVO[]>([]);
+  const [wangYiDateTime, setWangYiDateTime] = useState<Date>();
+  const wangYiHosts = async () => {
+    const res = await thirtySixKrHotNewsUsingGet();
+    if (res.code === 0 && res.data) {
+      setWangYiHotList(res.data);
+      setWangYiDateTime(res.currentDateTime);
+      return res;
+    }
+    return [] as API.HotNewsVO[];
+  };
+  // 腾讯热点
+  const [qqNewsHotList, setQQNewsHotList] = useState<API.HotNewsVO[]>([]);
+  const [qqNewsDateTime, setQQNewsDateTime] = useState<Date>();
+  const qqNewsHosts = async () => {
+    const res = await thirtySixKrHotNewsUsingGet();
+    if (res.code === 0 && res.data) {
+      setQQNewsHotList(res.data);
+      setQQNewsDateTime(res.currentDateTime);
+      return res;
+    }
+    return [] as API.HotNewsVO[];
+  };
+
   useEffect(() => {
     // bilibiliHosts();
     // dyHosts();
     touTiaoHosts();
     thePaPerHosts();
     thirtySixHosts();
+    wangYiHosts();
+    qqNewsHosts();
   }, []);
 
   return (
@@ -98,38 +126,9 @@ const Index: React.FC = () => {
             display: 'flex',
             flexWrap: 'wrap',
             gap: 20,
-            padding: '0 6vw 0',
+            padding: '0 2vw 0',
           }}
         >
-          {/*<HotNewsCar*/}
-          {/*  platFormName={'bilibili'}*/}
-          {/*  platFormURL={*/}
-          {/*    'https://s1.aigei.com/prevfiles/63af4c866bbf47c0a1d35ba709a6fd66.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:bpWjbRBO6xnoCBxVTEYFWewma_c='*/}
-          {/*  }*/}
-          {/*  hotList={bilibiliHotList}*/}
-          {/*  updateTime={bilibiliDateTime as Date}*/}
-          {/*  fetchData={bilibiliHosts}*/}
-          {/*/>*/}
-
-          {/*<HotNewsCar*/}
-          {/*  platFormName={'抖音'}*/}
-          {/*  platFormURL={*/}
-          {/*    'https://s1.aigei.com/src/img/png/5b/5b26e982f0b34c47817d3b40c9bf2d1f.png?imageMogr2/auto-orient/thumbnail/!282x282r/gravity/Center/crop/282x282/quality/85/%7CimageView2/2/w/282&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:YCO6IvUtFIqf6x1hmy82VctIElo='*/}
-          {/*  }*/}
-          {/*  hotList={dyHotList}*/}
-          {/*  updateTime={dyDateTime as Date}*/}
-          {/*  fetchData={dyHosts}*/}
-          {/*/>*/}
-
-          <HotNewsCar
-            platFormName={'今日头条'}
-            platFormURL={
-              'https://s1.aigei.com/src/img/png/bf/bf15b494f6a1443f938ba50e1e48c0e8.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:2ak54TXknIhA5_J-9eqx5kPH19A='
-            }
-            hotList={touTiaoHotList}
-            updateTime={touTiaoDateTime as Date}
-            fetchData={touTiaoHosts}
-          />
           <HotNewsCar
             platFormName={'澎湃新闻'}
             platFormURL={
@@ -143,11 +142,41 @@ const Index: React.FC = () => {
           <HotNewsCar
             platFormName={'36氪'}
             platFormURL={
-              'https://s1.aigei.com/src/img/png/25/25c51ce70f264a30a54ada7b2618ef99.png?imageMogr2/auto-orient/thumbnail/!132x132r/gravity/Center/crop/132x132/quality/85/%7CimageView2/2/w/132&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:W7Qm1G5Hw3RE-MgRhEHTd110t2w='
+              'https://static.36krcdn.com/36kr-web/static/ic_36kr_logo_68_38@2x.187cd924.png'
             }
             hotList={thirtySixHotList}
             updateTime={thirtySixDateTime as Date}
             fetchData={thirtySixHosts}
+          />
+
+          <HotNewsCar
+            platFormName={'网易新闻'}
+            platFormURL={
+              'https://s1.aigei.com/src/img/png/c7/c7c3339f88704b288c85b61cc6f349d1.png?imageMogr2/auto-orient/thumbnail/!282x282r/gravity/Center/crop/282x282/quality/85/%7CimageView2/2/w/282&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:vMbHfdp9MvPiir8gb49WUd-sdek='
+            }
+            hotList={wangYiHotList}
+            updateTime={wangYiDateTime as Date}
+            fetchData={wangYiHosts}
+          />
+
+          <HotNewsCar
+            platFormName={'腾讯新闻'}
+            platFormURL={
+              'https://s1.aigei.com/src/img/png/71/7167eb5cc0324b79a55bbd2b5b2db1ea.png?imageMogr2/auto-orient/thumbnail/!282x282r/gravity/Center/crop/282x282/quality/85/%7CimageView2/2/w/282&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:S10KK95T415aCjP2vu6DiffnWTg='
+            }
+            hotList={qqNewsHotList}
+            updateTime={qqNewsDateTime as Date}
+            fetchData={qqNewsHosts}
+          />
+
+          <HotNewsCar
+            platFormName={'今日头条'}
+            platFormURL={
+              'https://s1.aigei.com/src/img/png/bf/bf15b494f6a1443f938ba50e1e48c0e8.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:2ak54TXknIhA5_J-9eqx5kPH19A='
+            }
+            hotList={touTiaoHotList}
+            updateTime={touTiaoDateTime as Date}
+            fetchData={touTiaoHosts}
           />
         </div>
       </div>

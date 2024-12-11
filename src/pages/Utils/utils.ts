@@ -10,6 +10,7 @@ export const statusMap = {
 };
 
 export const hotNewsMap = {
+  toutiao: '头条',
   thepaper: '澎湃',
   wangyi: '网易',
   qq_news: '腾讯',

@@ -211,14 +211,22 @@ export default () => {
             if (record.platFormAccount === null) {
               message.error('请先选择平台账号');
             }
+            const matchedItem = thirdPartyAccount.find(
+              (item) => item.account === record.platFormAccount,
+            );
+            let thirdPartyFormName;
+            if (matchedItem) {
+              thirdPartyFormName = platFormAccountMap[matchedItem.platForm].values;
+            }
             try {
               const res = await productionArticleUsingPost({
-                aiPlatForm: 'xinghuo',
+                aiPlatForm: 'zhipu',
                 hotURL: record.hotUrl,
                 taskId: record.id,
-                thirdPartyFormName: record.hotPlatForm + 'Chrome',
+                thirdPartyFormName: thirdPartyFormName + 'Chrome',
                 title: record.hotNewTitle,
                 userIdStr: record.platFormAccount,
+                thirdHotPartyFormName: record.hotPlatForm,
               } as API.ProductionArticleAddReq);
               if (res.code === 0) {
                 message.success('生成成功');
