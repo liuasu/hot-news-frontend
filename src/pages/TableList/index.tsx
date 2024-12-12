@@ -5,7 +5,7 @@ import {
   deleteUsingPost,
   editUsingPost6,
   hotNewsQueryArticlesUsingPost,
-  listUsingGet3,
+  listUsingGet4,
 } from '@/services/hot-news/renwuzhongxin';
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -289,18 +289,21 @@ export default () => {
         <ProTable<API.TaskVO>
           columns={columns}
           actionRef={actionRef}
+          pagination={{
+            showSizeChanger: true,
+          }}
           request={async (params) => {
-            const res = await listUsingGet3({
+            const res = await listUsingGet4({
               pageSize: params.pageSize,
-              pageCurrent: params.current,
+              current: params.current,
               platForm: params.platFormAccount,
               taskStatus: params.taskStatus,
-            } as API.listUsingGET3Params);
+            } as API.listUsingGET4Params);
             const records = res.data?.records;
             return {
               data: records,
               success: true,
-              total: res?.total,
+              total: res.data?.total,
             };
           }}
           expandable={{

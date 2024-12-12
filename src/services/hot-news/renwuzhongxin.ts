@@ -41,9 +41,9 @@ export async function editUsingPost6(body: API.TaskEditReq, options?: { [key: st
 }
 
 /** 查询任务中心列表 GET /api/task/list */
-export async function listUsingGet3(
+export async function listUsingGet4(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET3Params,
+  params: API.listUsingGET4Params,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTaskVO_>('/api/task/list', {

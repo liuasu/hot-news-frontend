@@ -15,12 +15,14 @@ export default [
     icon: 'crown',
     access: 'canAdmin',
     routes: [
-      // { path: '/admin', redirect: '/admin/sub-page' },
       { path: '/admin/sub-page', name: '二级管理页', component: './Admin' },
+      { path: '/admin/hot-api', name: '热点接口管理', component: './Admin/HotApi' },
+      { path: '/admin/user', name: '用户管理', component: './Admin/User' },
+      { path: '/admin/log', name: '日志管理', component: './Admin/Log' },
     ],
   },
   { name: '任务中心', icon: 'table', path: '/task', component: './TableList' },
-  { name: '账号中心', path: '/user/account/centre', component: './User/AccountCentre' },
+  { name: '账号中心', path: '/User/account/centre', component: './User/AccountCentre' },
   { path: '/', redirect: '/index' },
   { path: '*', layout: false, component: './404' },
 ];

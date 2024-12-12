@@ -133,6 +133,14 @@ declare namespace API {
     updateDateTime?: DateTime;
   };
 
+  type BaseResponsePageOperLog_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: PageOperLog_;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
   type BaseResponsePageTaskVO_ = {
     code?: number;
     currentDateTime?: DateTime;
@@ -307,7 +315,17 @@ declare namespace API {
     title?: string;
   };
 
-  type listUsingGET3Params = {
+  type listUsingGET2Params = {
+    current?: number;
+    endTime?: string;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    startTime?: string;
+    userName?: string;
+  };
+
+  type listUsingGET4Params = {
     /** 第三方账号平台 */
     platForm?: string;
     /** 任务状态 */
@@ -334,9 +352,39 @@ declare namespace API {
     userRole?: string;
   };
 
+  type OperLog = {
+    className?: string;
+    costTime?: number;
+    errorMsg?: string;
+    id?: number;
+    isDelete?: number;
+    jsonResult?: string;
+    method?: string;
+    operIp?: string;
+    operParam?: string;
+    operTime?: string;
+    operUrl?: string;
+    operUser?: string;
+    requestMethod?: string;
+    status?: number;
+  };
+
   type OrderItem = {
     asc?: boolean;
     column?: string;
+  };
+
+  type PageOperLog_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: OperLog[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
   };
 
   type PageTaskVO_ = {

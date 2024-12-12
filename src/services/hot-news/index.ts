@@ -5,6 +5,7 @@
 import * as aimiyaopei from './aimiyaopei';
 import * as aitishici from './aitishici';
 import * as aiwenzhangshengcheng from './aiwenzhangshengcheng';
+import * as caozuorizhiji from './caozuorizhiji';
 import * as fileController from './fileController';
 import * as pingtairedian from './pingtairedian';
 import * as redianxinxijiekoude from './redianxinxijiekoude';
@@ -16,6 +17,7 @@ export default {
   fileController,
   redianxinxijiekoude,
   pingtairedian,
+  caozuorizhiji,
   aiwenzhangshengcheng,
   aitishici,
   renwuzhongxin,

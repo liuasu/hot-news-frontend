@@ -41,7 +41,7 @@ export async function editUsingPost4(body: API.PromptEditReq, options?: { [key: 
 }
 
 /** 查询ai提示词列表 GET /api/prompt/list */
-export async function listUsingGet2(options?: { [key: string]: any }) {
+export async function listUsingGet3(options?: { [key: string]: any }) {
   return request<API.BaseResponseListPromptVO_>('/api/prompt/list', {
     method: 'GET',
     ...(options || {}),

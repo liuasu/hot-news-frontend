@@ -9,6 +9,17 @@ export const statusMap = {
   },
 };
 
+export const resStatusMap = {
+  0: {
+    color: 'blue',
+    text: '正常',
+  },
+  1: {
+    color: 'red',
+    text: '异常',
+  },
+};
+
 export const hotNewsMap = {
   toutiao: '头条',
   thepaper: '澎湃',

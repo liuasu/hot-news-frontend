@@ -120,7 +120,7 @@ const Page = () => {
             marginBlockEnd: 24,
           }}
         >
-          <Link to={'/user/register'} style={{ float: 'left' }}>
+          <Link to={'/User/register'} style={{ float: 'left' }}>
             前往注册
           </Link>
           <Link to={''} style={{ float: 'right' }}>
