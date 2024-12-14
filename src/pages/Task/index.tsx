@@ -2,14 +2,13 @@ import ArticleModal from '@/components/ArticleModal';
 import { hotNewsMap, platFormAccountMap, statusMap } from '@/pages/Utils/utils';
 import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
 import {
-  deleteUsingPost,
-  editUsingPost6,
+  deleteUsingPost1,
   hotNewsQueryArticlesUsingPost,
-  listUsingGet4,
+  listUsingGet5,
 } from '@/services/hot-news/renwuzhongxin';
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, ConfigProvider, message, Tag } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -96,7 +95,7 @@ export default () => {
         if (matchedItem) {
           return matchedItem.userName;
         }
-        return null; // 或者你可以返回一个默认值
+        return '-'; // 或者你可以返回一个默认值
       },
     },
     {
@@ -111,7 +110,7 @@ export default () => {
         if (matchedItem) {
           return platFormAccountMap[matchedItem.platForm].text;
         }
-        return null; // 或者你可以返回一个默认值
+        return '-'; // 或者你可以返回一个默认值
       },
     },
     {
@@ -132,6 +131,9 @@ export default () => {
       search: false,
 
       render: (text, record) => {
+        if (!record.hotPlatForm) {
+          return '-';
+        }
         return hotNewsMap[record.hotPlatForm];
       },
     },
@@ -162,99 +164,99 @@ export default () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       render: (text, record: API.TaskVO, _, action) => [
         // eslint-disable-next-line react/jsx-key
-        <Button
-          type="primary"
-          onClick={async () => {
-            const map = new Map<string, string>();
-            try {
-              // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              setOpen(true);
-              const hotNewTitle: any = record?.hotNewTitle;
-              // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              setArtidleTitle(hotNewTitle);
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const res = await hotNewsQueryArticlesUsingPost({
-                title: record.hotNewTitle,
-                hotURL: record.hotUrl,
-                platformName: record.hotPlatForm,
-              } as API.ProductionArticleAddReq1);
-              if (res.code === 0) {
-                const data = res.data;
-                map.set('editing_1', data?.editing_1);
+        <Button type="primary">
+          <a
+            onClick={async () => {
+              const map = new Map<string, string>();
+              try {
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                if (data?.editing_2) {
-                  map.set('editing_2', data?.editing_2);
-                }
-                if (data?.editing_3) {
-                  map.set('editing_3', data?.editing_3);
-                }
+                setOpen(true);
+                const hotNewTitle: any = record?.hotNewTitle;
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                setArticle(map);
-              }
-              setTimeout(() => {
+                setArtidleTitle(hotNewTitle);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const res = await hotNewsQueryArticlesUsingPost({
+                  title: record.hotNewTitle,
+                  hotURL: record.hotUrl,
+                  platformName: record.hotPlatForm,
+                } as API.ProductionArticleAddReq1);
+                if (res.code === 0) {
+                  const data = res.data;
+                  map.set('editing_1', data?.editing_1);
+                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                  if (data?.editing_2) {
+                    map.set('editing_2', data?.editing_2);
+                  }
+                  if (data?.editing_3) {
+                    map.set('editing_3', data?.editing_3);
+                  }
+                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                  setArticle(map);
+                }
+                setTimeout(() => {
+                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                  setLoading(false);
+                }, 5000);
+              } catch (e) {
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 setLoading(false);
-              }, 5000);
-            } catch (e) {
-              // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              setLoading(false);
-            }
-          }}
-        >
-          查 看
+              }
+            }}
+          >
+            查 看
+          </a>
         </Button>,
         // eslint-disable-next-line react/jsx-key
-        <Button
-          type="primary"
-          disabled={record.taskStatus === 1}
-          onClick={async () => {
-            if (record.platFormAccount === null) {
-              message.error('请先选择平台账号');
-            }
-            const matchedItem = thirdPartyAccount.find(
-              (item) => item.account === record.platFormAccount,
-            );
-            let thirdPartyFormName;
-            if (matchedItem) {
-              thirdPartyFormName = platFormAccountMap[matchedItem.platForm].values;
-            }
-            try {
-              const res = await productionArticleUsingPost({
-                aiPlatForm: 'zhipu',
-                hotURL: record.hotUrl,
-                taskId: record.id,
-                thirdPartyFormName: thirdPartyFormName + 'Chrome',
-                title: record.hotNewTitle,
-                userIdStr: record.platFormAccount,
-                thirdHotPartyFormName: record.hotPlatForm,
-              } as API.ProductionArticleAddReq);
+        <Button type="primary" disabled={record.taskStatus === 1}>
+          <a
+            onClick={async () => {
+              if (record.platFormAccount === null) {
+                message.error('请先选择平台账号');
+              }
+              const matchedItem = thirdPartyAccount.find(
+                (item) => item.account === record.platFormAccount,
+              );
+              let thirdPartyFormName;
+              if (matchedItem) {
+                thirdPartyFormName = platFormAccountMap[matchedItem.platForm].values;
+              }
+              try {
+                const res = await productionArticleUsingPost({
+                  aiPlatForm: 'zhipu',
+                  hotURL: record.hotUrl,
+                  taskId: record.id,
+                  thirdPartyFormName: thirdPartyFormName + 'Chrome',
+                  title: record.hotNewTitle,
+                  userIdStr: record.platFormAccount,
+                  thirdHotPartyFormName: record.hotPlatForm,
+                } as API.ProductionArticleAddReq);
+                if (res.code === 0) {
+                  message.success('生成成功');
+                  action?.reload();
+                }
+              } catch (e) {
+                message.error('生成失败');
+              }
+            }}
+          >
+            生 成
+          </a>
+        </Button>,
+        // eslint-disable-next-line react/jsx-key
+        <Button type="primary" danger disabled={record.taskStatus === 1}>
+          <a
+            onClick={async () => {
+              const res = await deleteUsingPost1({
+                id: record.id,
+              } as API.deleteUsingPOSTParams);
               if (res.code === 0) {
-                message.success('生成成功');
+                message.success('已取消');
                 action?.reload();
               }
-            } catch (e) {
-              message.error('生成失败');
-            }
-          }}
-        >
-          生 成
-        </Button>,
-        // eslint-disable-next-line react/jsx-key
-        <Button
-          type="primary"
-          danger
-          disabled={record.taskStatus === 1}
-          onClick={async () => {
-            const res = await deleteUsingPost({
-              id: record.id,
-            } as API.deleteUsingPOSTParams);
-            if (res.code === 0) {
-              message.success('取消改任务配置');
-              action?.reload();
-            }
-          }}
-        >
-          取 消
+            }}
+          >
+            取 消
+          </a>
         </Button>,
       ],
     },
@@ -285,59 +287,62 @@ export default () => {
         backgroundColor: 'hsl(218,22%,7%)',
       }}
     >
-      <ConfigProvider>
-        <ProTable<API.TaskVO>
-          columns={columns}
-          actionRef={actionRef}
-          pagination={{
-            showSizeChanger: true,
-          }}
-          request={async (params) => {
-            const res = await listUsingGet4({
-              pageSize: params.pageSize,
-              current: params.current,
-              platForm: params.platFormAccount,
-              taskStatus: params.taskStatus,
-            } as API.listUsingGET4Params);
-            const records = res.data?.records;
-            return {
-              data: records,
-              success: true,
-              total: res.data?.total,
-            };
-          }}
-          expandable={{
-            expandedRowRender(record) {
-              if (record.platFormAccount === null || record.platFormAccount === '') {
-                return expandedRowRender(thirdPartyAccount, record, actionRef);
-              }
-            },
-          }}
-          rowKey="id"
-          search={{
-            labelWidth: 'auto',
-          }}
-          options={{
-            setting: {
-              listsHeight: 400,
-            },
-          }}
-          dateFormatter="string"
-        />
-      </ConfigProvider>
+      <PageContainer>
+        <ConfigProvider>
+          <ProTable<API.TaskVO>
+            columns={columns}
+            actionRef={actionRef}
+            pagination={{
+              showSizeChanger: true,
+              defaultPageSize: 10,
+            }}
+            request={async (params) => {
+              const res = await listUsingGet5({
+                pageSize: params.pageSize,
+                current: params.current,
+                platForm: params.platFormAccount,
+                taskStatus: params.taskStatus,
+              } as API.listUsingGET5Params);
+              const records = res.data?.records;
+              return {
+                data: records,
+                success: true,
+                total: res.data?.total,
+              };
+            }}
+            expandable={{
+              expandedRowRender(record) {
+                if (record.platFormAccount === null || record.platFormAccount === '') {
+                  return expandedRowRender(thirdPartyAccount, record, actionRef);
+                }
+              },
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            options={{
+              setting: {
+                listsHeight: 400,
+              },
+            }}
+            dateFormatter="string"
+          />
+        </ConfigProvider>
 
-      <ArticleModal
-        title={articleTitle}
-        loading={loading}
-        open={open}
-        onCancel={() => {
-          setLoading(false);
-          setOpen(false);
-          setArtidleTitle('');
-          setArticle(new Map<string, string>());
-        }}
-        values={article}
-      />
+        <ArticleModal
+          title={articleTitle}
+          loading={loading}
+          open={open}
+          onCancel={() => {
+            setLoading(false);
+            setOpen(false);
+            setArtidleTitle('');
+            setArticle(new Map<string, string>());
+          }}
+          values={article}
+        />
+      </PageContainer>
     </div>
   );
 };

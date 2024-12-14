@@ -114,6 +114,10 @@ const Index: React.FC = () => {
           rowKey="id"
           columns={columns}
           actionRef={actionRef}
+          pagination={{
+            showSizeChanger: true,
+            defaultPageSize: 10,
+          }}
           request={async (params) => {
             const res = await listUsingGet2({
               userName: params.operUser,

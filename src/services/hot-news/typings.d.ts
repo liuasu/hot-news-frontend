@@ -77,14 +77,6 @@ declare namespace API {
     updateDateTime?: DateTime;
   };
 
-  type BaseResponseListHotApiVO_ = {
-    code?: number;
-    currentDateTime?: DateTime;
-    data?: HotApiVO[];
-    message?: string;
-    updateDateTime?: DateTime;
-  };
-
   type BaseResponseListHotNewsVO_ = {
     code?: number;
     currentDateTime?: DateTime;
@@ -133,10 +125,26 @@ declare namespace API {
     updateDateTime?: DateTime;
   };
 
+  type BaseResponsePageHotApiVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: PageHotApiVO_;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
   type BaseResponsePageOperLog_ = {
     code?: number;
     currentDateTime?: DateTime;
     data?: PageOperLog_;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponsePagePromptVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: PagePromptVO_;
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -161,6 +169,14 @@ declare namespace API {
     code?: number;
     currentDateTime?: DateTime;
     data?: PageUserVO_;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponsePromptVO_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: PromptVO;
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -220,6 +236,11 @@ declare namespace API {
     id?: number;
   };
 
+  type deleteUsingPOST1Params = {
+    /** id */
+    id: number;
+  };
+
   type deleteUsingPOSTParams = {
     /** id */
     id: number;
@@ -243,17 +264,17 @@ declare namespace API {
     id: number;
   };
 
-  type editUsingPOST5Params = {
-    /** id */
-    id: number;
-  };
-
   type findAiConfigByIdUsingGETParams = {
     /** id */
     id: number;
   };
 
   type findHotApiByIdUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
+  type getByIdUsingGETParams = {
     /** id */
     id: number;
   };
@@ -292,18 +313,12 @@ declare namespace API {
     platform?: string;
   };
 
-  type HotApiQueryReq = {
-    /** 接口名称 */
-    apiName?: string;
-    /** 平台 */
-    platform?: string;
-  };
-
   type HotApiVO = {
     apiDescribe?: string;
     apiName?: string;
     apiURL?: string;
     id?: number;
+    platform?: string;
   };
 
   type HotNewsVO = {
@@ -313,6 +328,17 @@ declare namespace API {
     id?: number;
     imageURL?: string;
     title?: string;
+  };
+
+  type listUsingGET1Params = {
+    /** 接口名称 */
+    apiName?: string;
+    /** 平台 */
+    platform?: string;
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
   };
 
   type listUsingGET2Params = {
@@ -325,7 +351,14 @@ declare namespace API {
     userName?: string;
   };
 
-  type listUsingGET4Params = {
+  type listUsingGET3Params = {
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type listUsingGET5Params = {
     /** 第三方账号平台 */
     platForm?: string;
     /** 任务状态 */
@@ -374,6 +407,19 @@ declare namespace API {
     column?: string;
   };
 
+  type PageHotApiVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: HotApiVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type PageOperLog_ = {
     countId?: string;
     current?: number;
@@ -382,6 +428,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: OperLog[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PagePromptVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: PromptVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -561,6 +620,7 @@ declare namespace API {
   };
 
   type UserQueryRequest = {
+    createTime?: string;
     current?: number;
     id?: number;
     mpOpenId?: string;
@@ -568,6 +628,7 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     unionId?: string;
+    userAccount?: string;
     userName?: string;
     userProfile?: string;
     userRole?: string;
@@ -596,6 +657,7 @@ declare namespace API {
   type UserVO = {
     createTime?: string;
     id?: number;
+    userAccount?: string;
     userAvatar?: string;
     userName?: string;
     userRole?: string;

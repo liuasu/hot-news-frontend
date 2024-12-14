@@ -16,20 +16,6 @@ export async function findHotApiByIdUsingGet(
   });
 }
 
-/** 删除热点信息接口地 POST /api/hotApi/${param0} */
-export async function editUsingPost3(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.editUsingPOST3Params,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<API.BaseResponseBoolean_>(`/api/hotApi/${param0}`, {
-    method: 'POST',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
 /** 添加热点信息接口地 POST /api/hotApi/add */
 export async function addUsingPost1(body: API.HotApiAddReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/hotApi/add', {
@@ -38,6 +24,20 @@ export async function addUsingPost1(body: API.HotApiAddReq, options?: { [key: st
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除热点信息接口地 POST /api/hotApi/delete/${param0} */
+export async function editUsingPost3(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.editUsingPOST3Params,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.BaseResponseBoolean_>(`/api/hotApi/delete/${param0}`, {
+    method: 'POST',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
@@ -87,13 +87,16 @@ export async function excelAddUsingPost(body: {}, file?: File, options?: { [key:
 }
 
 /** 查询热点信息接口地列表 GET /api/hotApi/list */
-export async function listUsingGet1(body: API.HotApiQueryReq, options?: { [key: string]: any }) {
-  return request<API.BaseResponseListHotApiVO_>('/api/hotApi/list', {
+export async function listUsingGet1(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.listUsingGET1Params,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponsePageHotApiVO_>('/api/hotApi/list', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+    params: {
+      ...params,
     },
-    data: body,
     ...(options || {}),
   });
 }

@@ -2,15 +2,15 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 删除ai提示词 POST /api/prompt/${param0} */
-export async function editUsingPost5(
+/** 按id查询提示词 GET /api/prompt/${param0} */
+export async function getByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.editUsingPOST5Params,
+  params: API.getByIdUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.BaseResponseBoolean_>(`/api/prompt/${param0}`, {
-    method: 'POST',
+  return request<API.BaseResponsePromptVO_>(`/api/prompt/${param0}`, {
+    method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -28,6 +28,35 @@ export async function addUsingPost2(body: API.PromptAddReq, options?: { [key: st
   });
 }
 
+/** 查询ai提示词列表 GET /api/prompt/admin/list */
+export async function listUsingGet3(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.listUsingGET3Params,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponsePagePromptVO_>('/api/prompt/admin/list', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 删除ai提示词 POST /api/prompt/delete/${param0} */
+export async function deleteUsingPost(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deleteUsingPOSTParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.BaseResponseBoolean_>(`/api/prompt/delete/${param0}`, {
+    method: 'POST',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 修改ai提示词 POST /api/prompt/edit */
 export async function editUsingPost4(body: API.PromptEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/prompt/edit', {
@@ -41,7 +70,7 @@ export async function editUsingPost4(body: API.PromptEditReq, options?: { [key: 
 }
 
 /** 查询ai提示词列表 GET /api/prompt/list */
-export async function listUsingGet3(options?: { [key: string]: any }) {
+export async function listUsingGet4(options?: { [key: string]: any }) {
   return request<API.BaseResponseListPromptVO_>('/api/prompt/list', {
     method: 'GET',
     ...(options || {}),

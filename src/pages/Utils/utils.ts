@@ -1,3 +1,21 @@
+export const userRolesMap = {
+  admin: {
+    color: 'blue',
+    text: '管理员',
+  },
+  user: {
+    color: 'green',
+    text: '普通用户',
+  },
+  ban: {
+    color: 'red',
+    text: '封禁用户',
+  },
+};
+
+/**
+ * 任务状态枚举
+ */
 export const statusMap = {
   0: {
     color: 'blue',
@@ -9,6 +27,9 @@ export const statusMap = {
   },
 };
 
+/**
+ * 日志状态枚举
+ */
 export const resStatusMap = {
   0: {
     color: 'blue',
@@ -19,7 +40,9 @@ export const resStatusMap = {
     text: '异常',
   },
 };
-
+/**
+ * 热点平台枚举
+ */
 export const hotNewsMap = {
   toutiao: '头条',
   thepaper: '澎湃',
@@ -28,6 +51,9 @@ export const hotNewsMap = {
   thirtysix: '36氪',
 };
 
+/**
+ * 第三方账号枚举
+ */
 export const platFormAccountMap = {
   toutiao: {
     text: '头条号',
@@ -37,4 +63,8 @@ export const platFormAccountMap = {
     text: '百家号',
     values: 'baijia',
   },
+};
+
+export const promptTemplateUtils = (text: string) => {
+  return text.replace('\n', '\\n').replace('"', '\\"').replace("'", "\\'");
 };

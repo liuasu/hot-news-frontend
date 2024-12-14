@@ -1,19 +1,14 @@
-import CreateModal from '@/pages/Admin/User/componentss/CreateModal';
-import { userRolesMap } from '@/pages/Utils/utils';
-import {
-  deleteUserUsingPost,
-  listUserByPageUsingPost,
-  updateUserUsingPost,
-} from '@/services/hot-news/userController';
-import { useModel } from '@@/plugin-model';
+import CreateModal from '@/pages/Admin/Prompt/componentss/CreateModal';
+import UpdateModal from '@/pages/Admin/Prompt/componentss/UpdateModal';
+import { deleteUsingPost, getByIdUsingGet, listUsingGet3 } from '@/services/hot-news/aitishici';
 import { PlusOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, message, Tag } from 'antd';
+import { Button, message } from 'antd';
 import React, { useRef } from 'react';
 
 export default () => {
-  const columns: ProColumns<API.UserVO>[] = [
+  const columns: ProColumns<API.PromptVO>[] = [
     // createTime
     // userAvatar
     // userName
@@ -27,86 +22,54 @@ export default () => {
       hideInForm: true,
     },
     {
-      title: '账号',
-      dataIndex: 'userAccount',
-      valueType: 'text',
-    },
-    {
-      title: '用户名',
-      dataIndex: 'userName',
-      valueType: 'text',
-      hideInForm: true,
-    },
-    {
-      title: '头像',
-      dataIndex: 'userAvatar',
+      title: '提示词名称',
+      dataIndex: 'promptName',
       valueType: 'text',
       hideInSearch: true,
-      hideInForm: true,
-      render: (dom, record) => {
-        return (
-          <>
-            <img src={record.userAvatar} alt="头像" style={{ width: '50px', height: '50px' }} />
-          </>
-        );
-      },
+      width: 300,
     },
     {
-      title: '角色',
-      dataIndex: 'userRole',
+      title: '提示词模板',
+      dataIndex: 'promptTemplate',
       valueType: 'text',
-      render: (_, record) => {
-        return (
-          <>
-            <Tag color={userRolesMap[record.userRole].color}>
-              {userRolesMap[record.userRole].text}
-            </Tag>
-          </>
-        );
-      },
-      valueEnum: userRolesMap,
-    },
-    {
-      title: '注册时间',
-      dataIndex: 'createTime',
-      valueType: 'date',
-      hideInForm: true,
+      tooltip: '建议复制后进行查看',
+      ellipsis: true,
+      copyable: true,
+      hideInSearch: true,
     },
     {
       title: '操作',
       valueType: 'option',
       key: 'option',
+      width: 300,
       render: (dom, record, _, action) => {
         return [
-          <Button type={'primary'} key="edit" disabled={currentUser.id === record.id}>
+          <Button type={'primary'} key="edit">
             <a
               onClick={async () => {
-                const res = await updateUserUsingPost({
+                const res = await getByIdUsingGet({
                   id: record.id,
-                  userRole: record.userRole === 'ban' ? 'user' : 'ban',
-                });
+                } as API.getByIdUsingGETParams);
                 if (res.code === 0) {
-                  message.success('操作成功');
-                  action?.reload();
-                } else {
-                  message.error('操作失败');
+                  setUpdateModalVisible(true);
+                  setUpdateModalData(res?.data);
                 }
               }}
             >
-              {record.userRole === 'ban' ? '拉出小黑屋' : '拉进小黑屋'}
+              编 辑
             </a>
           </Button>,
-          <Button type={'primary'} danger key="delete" disabled={currentUser.id === record.id}>
+          <Button type={'primary'} danger key="delete">
             <a
               onClick={async () => {
-                const res = await deleteUserUsingPost({
+                const res = await deleteUsingPost({
                   id: record.id,
-                });
+                } as API.deleteUsingPOSTParams);
                 if (res.code === 0) {
-                  message.success('操作成功');
+                  message.success('编辑成功');
                   action?.reload();
                 } else {
-                  message.error('操作失败');
+                  message.error('编辑失败,' + res.message);
                 }
               }}
             >
@@ -117,27 +80,24 @@ export default () => {
       },
     },
   ];
-  const { initialState } = useModel('@@initialState');
-  const currentUser = initialState?.currentUser;
   const actionRef = useRef<ActionType>();
   const [createModalVisible, setCreateModalVisible] = React.useState(false);
+  const [updateModalVisible, setUpdateModalVisible] = React.useState(false);
+  const [updateModalData, setUpdateModalData] = React.useState<API.PromptVO>();
 
   return (
     <PageContainer>
-      <ProTable<API.UserVO>
+      <ProTable<API.PromptVO>
         rowKey="id"
         columns={columns}
         actionRef={actionRef}
+        search={false}
         pagination={{
           showSizeChanger: true,
           defaultPageSize: 10,
         }}
         request={async (params) => {
-          const res = await listUserByPageUsingPost({
-            userAccount: params.userAccount,
-            userName: params.userName,
-            userRole: params.userRole,
-            createTime: params.createTime,
+          const res = await listUsingGet3({
             pageSize: params.pageSize,
             current: params.current,
           });
@@ -168,6 +128,18 @@ export default () => {
         }}
         onCancel={() => {
           setCreateModalVisible(false);
+        }}
+      />
+      <UpdateModal
+        visible={updateModalVisible}
+        columns={columns}
+        oldData={updateModalData}
+        onSubmit={() => {
+          setUpdateModalVisible(false);
+          actionRef.current?.reload();
+        }}
+        onCancel={() => {
+          setUpdateModalVisible(false);
         }}
       />
     </PageContainer>

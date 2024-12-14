@@ -2,20 +2,6 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 删除任务中心 POST /api/task/${param0} */
-export async function deleteUsingPost(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingPOSTParams,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<API.BaseResponseBoolean_>(`/api/task/${param0}`, {
-    method: 'POST',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
 /** 添加任务中心 POST /api/task/add */
 export async function addUsingPost3(body: API.TaskAddReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/task/add', {
@@ -28,8 +14,22 @@ export async function addUsingPost3(body: API.TaskAddReq, options?: { [key: stri
   });
 }
 
+/** 删除任务中心 POST /api/task/delete/${param0} */
+export async function deleteUsingPost1(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deleteUsingPOST1Params,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.BaseResponseBoolean_>(`/api/task/delete/${param0}`, {
+    method: 'POST',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 修改任务中心 POST /api/task/edit */
-export async function editUsingPost6(body: API.TaskEditReq, options?: { [key: string]: any }) {
+export async function editUsingPost5(body: API.TaskEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/task/edit', {
     method: 'POST',
     headers: {
@@ -41,9 +41,9 @@ export async function editUsingPost6(body: API.TaskEditReq, options?: { [key: st
 }
 
 /** 查询任务中心列表 GET /api/task/list */
-export async function listUsingGet4(
+export async function listUsingGet5(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET4Params,
+  params: API.listUsingGET5Params,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTaskVO_>('/api/task/list', {

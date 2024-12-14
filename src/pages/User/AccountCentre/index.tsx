@@ -5,7 +5,7 @@ import {
   queryThirdPartyAccountUsingGet,
 } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, ConfigProvider, message, Spin } from 'antd';
 import React, { useRef, useState } from 'react';
 
@@ -145,36 +145,38 @@ export default () => {
         backgroundColor: 'hsl(218,22%,7%)',
       }}
     >
-      <ConfigProvider>
-        <ProTable<API.AccountCentreVO>
-          columns={columns}
-          actionRef={actionRef}
-          // cardBordered
-          request={async () => {
-            const res = await getThirdPartyAccountListByAccountCentreUsingGet();
-            return {
-              data: res.data,
-              success: true,
-            };
-          }}
-          expandable={{
-            expandedRowRender(record) {
-              if (record.thirdPartyAccountVOList.length > 0) {
-                return expandedRowRender(record, actionRef);
-              }
-            },
-          }}
-          search={false}
-          rowKey={'name'}
-          options={{
-            setting: {
-              listsHeight: 400,
-            },
-          }}
-          dateFormatter="string"
-        />
-      </ConfigProvider>
-      <Spin spinning={spinning} fullscreen />
+      <PageContainer>
+        <ConfigProvider>
+          <ProTable<API.AccountCentreVO>
+            columns={columns}
+            actionRef={actionRef}
+            // cardBordered
+            request={async () => {
+              const res = await getThirdPartyAccountListByAccountCentreUsingGet();
+              return {
+                data: res.data,
+                success: true,
+              };
+            }}
+            expandable={{
+              expandedRowRender(record) {
+                if (record.thirdPartyAccountVOList.length > 0) {
+                  return expandedRowRender(record, actionRef);
+                }
+              },
+            }}
+            search={false}
+            rowKey={'name'}
+            options={{
+              setting: {
+                listsHeight: 400,
+              },
+            }}
+            dateFormatter="string"
+          />
+        </ConfigProvider>
+        <Spin spinning={spinning} fullscreen />
+      </PageContainer>
     </div>
   );
 };
