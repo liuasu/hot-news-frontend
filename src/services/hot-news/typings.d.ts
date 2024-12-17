@@ -30,6 +30,7 @@ declare namespace API {
   };
 
   type AiConfigVO = {
+    aiPlatFormName?: string;
     aiPlatForm?: string;
     apiKey?: string;
     apiSecret?: string;

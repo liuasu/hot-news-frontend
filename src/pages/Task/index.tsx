@@ -3,6 +3,7 @@ import { hotNewsMap, platFormAccountMap, statusMap } from '@/pages/Utils/utils';
 import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
 import {
   deleteUsingPost1,
+  editUsingPost5,
   hotNewsQueryArticlesUsingPost,
   listUsingGet5,
 } from '@/services/hot-news/renwuzhongxin';
@@ -47,8 +48,7 @@ const expandedRowRender = (
             // eslint-disable-next-line react/jsx-key
             <a
               onClick={async () => {
-                console.log(record);
-                const res = await editUsingPost6({
+                const res = await editUsingPost5({
                   id: task.id,
                   platFormAccount: record.account,
                   platForm: record.platForm,
@@ -222,7 +222,8 @@ export default () => {
               }
               try {
                 const res = await productionArticleUsingPost({
-                  aiPlatForm: 'zhipu',
+                  aiPlatForm: selectedAiModel,
+                  // aiPlatForm: aiModle,
                   hotURL: record.hotUrl,
                   taskId: record.id,
                   thirdPartyFormName: thirdPartyFormName + 'Chrome',
@@ -264,7 +265,9 @@ export default () => {
 
   const actionRef = useRef<ActionType>();
   const [thirdPartyAccount, setThirdPartyAccount] = useState<API.ThirdPartyAccountVO[]>([]);
-
+  const selectedAiModel = localStorage.getItem('selectedAiModel');
+  // const { initialState } = useModel('@@initialState');
+  // const aiModle = initialState.aiModel;
   //打开对话框
   const [open, setOpen] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);

@@ -68,3 +68,14 @@ export const platFormAccountMap = {
 export const promptTemplateUtils = (text: string) => {
   return text.replace('\n', '\\n').replace('"', '\\"').replace("'", "\\'");
 };
+
+// let aiModel;
+// export const getAiModel = () => {
+//   return aiModel;
+// };
+// export const setAiModel = (text: string) => {
+//   if (text === null || text === '') {
+//     return;
+//   }
+//   aiModel = text;
+// };

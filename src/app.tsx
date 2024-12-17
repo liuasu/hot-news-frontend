@@ -16,6 +16,7 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.UserVO | undefined>;
+  aiModel?: string;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -34,6 +35,7 @@ export async function getInitialState(): Promise<{
       fetchUserInfo,
       currentUser,
       settings: defaultSettings,
+      aiModel: '',
     };
   }
   return {

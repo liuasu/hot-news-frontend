@@ -1,54 +1,14 @@
 import { HotNewsCar } from '@/components/HotNewsCar';
 import {
-  biLiBiLiHotNewsUsingGet,
-  dyHotNewsUsingGet,
+  qqNewsHotNewsUsingGet,
   thePaPerHotNewsUsingGet,
   thirtySixKrHotNewsUsingGet,
-  touTiaoHotNewsUsingGet,
+  wangYiHotNewsUsingGet,
 } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 
 const Index: React.FC = () => {
-  // bilibili 热门新闻
-  const [bilibiliHotList, setBilibiliHotList] = useState<API.HotNewsVO[]>([]);
-  const [bilibiliDateTime, setBilibiliDateTime] = useState<Date>();
-  const bilibiliHosts = async () => {
-    const res = await biLiBiLiHotNewsUsingGet();
-    if (res.code === 0 && res.data) {
-      // bilibiliHotList = res.data;
-      setBilibiliHotList(res.data);
-      setBilibiliDateTime(res.currentDateTime);
-      return res;
-    }
-    return [] as API.HotNewsVO[];
-  };
-
-  // douyin 热门新闻
-  const [dyHotList, setDyHotList] = useState<API.HotNewsVO[]>([]);
-  const [dyDateTime, setDyDateTime] = useState<Date>();
-  const dyHosts = async () => {
-    const res = await dyHotNewsUsingGet();
-    if (res.code === 0 && res.data) {
-      setDyHotList(res.data);
-      setDyDateTime(res.currentDateTime);
-      return res;
-    }
-    return [] as API.HotNewsVO[];
-  };
-
-  // toutiao 热门新闻
-  const [touTiaoHotList, setTouTiaoHotList] = useState<API.HotNewsVO[]>([]);
-  const [touTiaoDateTime, setTouTiaoDateTime] = useState<Date>();
-  const touTiaoHosts = async () => {
-    const res = await touTiaoHotNewsUsingGet();
-    if (res.code === 0 && res.data) {
-      setTouTiaoHotList(res.data);
-      setTouTiaoDateTime(res.currentDateTime);
-      return res;
-    }
-    return [] as API.HotNewsVO[];
-  };
   // 澎湃 热门新闻
   const [thePaPerHotList, setThePaPerHotList] = useState<API.HotNewsVO[]>([]);
   const [thePaPerDateTime, setThePaPerDateTime] = useState<Date>();
@@ -79,7 +39,7 @@ const Index: React.FC = () => {
   const [wangYiHotList, setWangYiHotList] = useState<API.HotNewsVO[]>([]);
   const [wangYiDateTime, setWangYiDateTime] = useState<Date>();
   const wangYiHosts = async () => {
-    const res = await thirtySixKrHotNewsUsingGet();
+    const res = await wangYiHotNewsUsingGet();
     if (res.code === 0 && res.data) {
       setWangYiHotList(res.data);
       setWangYiDateTime(res.currentDateTime);
@@ -91,7 +51,7 @@ const Index: React.FC = () => {
   const [qqNewsHotList, setQQNewsHotList] = useState<API.HotNewsVO[]>([]);
   const [qqNewsDateTime, setQQNewsDateTime] = useState<Date>();
   const qqNewsHosts = async () => {
-    const res = await thirtySixKrHotNewsUsingGet();
+    const res = await qqNewsHotNewsUsingGet();
     if (res.code === 0 && res.data) {
       setQQNewsHotList(res.data);
       setQQNewsDateTime(res.currentDateTime);
@@ -101,9 +61,6 @@ const Index: React.FC = () => {
   };
 
   useEffect(() => {
-    // bilibiliHosts();
-    // dyHosts();
-    touTiaoHosts();
     thePaPerHosts();
     thirtySixHosts();
     wangYiHosts();
@@ -167,16 +124,6 @@ const Index: React.FC = () => {
             hotList={qqNewsHotList}
             updateTime={qqNewsDateTime as Date}
             fetchData={qqNewsHosts}
-          />
-
-          <HotNewsCar
-            platFormName={'今日头条'}
-            platFormURL={
-              'https://s1.aigei.com/src/img/png/bf/bf15b494f6a1443f938ba50e1e48c0e8.png?e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:2ak54TXknIhA5_J-9eqx5kPH19A='
-            }
-            hotList={touTiaoHotList}
-            updateTime={touTiaoDateTime as Date}
-            fetchData={touTiaoHosts}
           />
         </div>
       </div>
