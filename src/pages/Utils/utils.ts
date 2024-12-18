@@ -79,3 +79,18 @@ export const promptTemplateUtils = (text: string) => {
 //   }
 //   aiModel = text;
 // };
+
+export const getPromptLocalStorage = () => {
+  return localStorage.getItem('promptLocalStorage');
+};
+
+export const removePromptLocalStorage = () => {
+  return localStorage.removeItem('promptLocalStorage');
+};
+
+export const getSelectedAiModel = () => {
+  return localStorage.getItem('selectedAiModel');
+};
+export const removeSelectedAiModel = () => {
+  return localStorage.removeItem('selectedAiModel');
+};

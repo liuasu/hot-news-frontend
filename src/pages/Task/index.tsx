@@ -1,5 +1,11 @@
 import ArticleModal from '@/components/ArticleModal';
-import { hotNewsMap, platFormAccountMap, statusMap } from '@/pages/Utils/utils';
+import {
+  getPromptLocalStorage,
+  getSelectedAiModel,
+  hotNewsMap,
+  platFormAccountMap,
+  statusMap,
+} from '@/pages/Utils/utils';
 import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
 import {
   deleteUsingPost1,
@@ -10,7 +16,7 @@ import {
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, ConfigProvider, message, Tag } from 'antd';
+import { Button, ConfigProvider, message, Spin, Tag } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 const expandedRowRender = (
@@ -183,22 +189,12 @@ export default () => {
                 if (res.code === 0) {
                   const data = res.data;
                   map.set('editing_1', data?.editing_1);
-                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                  if (data?.editing_2) {
-                    map.set('editing_2', data?.editing_2);
-                  }
-                  if (data?.editing_3) {
-                    map.set('editing_3', data?.editing_3);
-                  }
-                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   setArticle(map);
                 }
                 setTimeout(() => {
-                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   setLoading(false);
                 }, 5000);
               } catch (e) {
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 setLoading(false);
               }
             }}
@@ -221,9 +217,10 @@ export default () => {
                 thirdPartyFormName = platFormAccountMap[matchedItem.platForm].values;
               }
               try {
+                setSpinning(true);
                 const res = await productionArticleUsingPost({
-                  aiPlatForm: selectedAiModel,
-                  // aiPlatForm: aiModle,
+                  aiPlatForm: getSelectedAiModel(),
+                  promptName: getPromptLocalStorage(),
                   hotURL: record.hotUrl,
                   taskId: record.id,
                   thirdPartyFormName: thirdPartyFormName + 'Chrome',
@@ -238,6 +235,7 @@ export default () => {
               } catch (e) {
                 message.error('生成失败');
               }
+              setSpinning(false);
             }}
           >
             生 成
@@ -265,14 +263,13 @@ export default () => {
 
   const actionRef = useRef<ActionType>();
   const [thirdPartyAccount, setThirdPartyAccount] = useState<API.ThirdPartyAccountVO[]>([]);
-  const selectedAiModel = localStorage.getItem('selectedAiModel');
-  // const { initialState } = useModel('@@initialState');
-  // const aiModle = initialState.aiModel;
   //打开对话框
   const [open, setOpen] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [article, setArticle] = useState<Map<string, string>>(new Map<string, string>());
   const [articleTitle, setArtidleTitle] = useState<string>('');
+  // 加载显示
+  const [spinning, setSpinning] = React.useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -346,6 +343,7 @@ export default () => {
           values={article}
         />
       </PageContainer>
+      <Spin spinning={spinning} fullscreen size={'large'} tip={'文章生成中，请耐心等待'} />
     </div>
   );
 };

@@ -25,9 +25,8 @@ export default () => {
       title: '模型id',
       dataIndex: 'appId',
       ellipsis: true,
-      // 第一行不允许编辑
-      editable: (text, record, index) => {
-        return record.appId !== '';
+      editable: (text, record) => {
+        return record.aiPlatForm === 'xinghuo';
       },
     },
     {
@@ -40,7 +39,7 @@ export default () => {
       dataIndex: 'apiSecret',
       ellipsis: true,
       editable: (text, record) => {
-        return record.apiSecret !== '';
+        return record.aiPlatForm === 'xinghuo';
       },
     },
     {
@@ -60,6 +59,19 @@ export default () => {
         <Button key="create" disabled={selectedAiModel === record.aiPlatForm}>
           <a
             onClick={() => {
+              if (
+                record.aiPlatForm === 'xinghuo' &&
+                !record.appId &&
+                !record.apiKey &&
+                !record.apiSecret
+              ) {
+                message.error('请先填写appId、apiKey、apiSecret');
+                return;
+              }
+              if (record.aiPlatForm !== 'xinghuo' && !record.apiKey) {
+                message.error('请先填写apiKey');
+                return;
+              }
               // 设置值
               setSelectedAiModel(record.aiPlatForm as string);
               // 刷新表格
@@ -75,11 +87,9 @@ export default () => {
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const actionRef = useRef<ActionType>();
-
   const [selectedAiModel, setSelectedAiModel] = useState<string>('');
-  useEffect(() => {
-    console.log('a', selectedAiModel);
 
+  useEffect(() => {
     if (!selectedAiModel) {
       setSelectedAiModel(localStorage.getItem('selectedAiModel')); // 设置全局状态
     } else {

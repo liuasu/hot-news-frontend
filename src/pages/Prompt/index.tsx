@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, message } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const columns: ProColumns<API.PromptVO>[] = [
@@ -40,6 +40,18 @@ export default () => {
       width: 300,
       render: (dom, record, _, action) => {
         return [
+          <Button
+            type={'primary'}
+            key="creat"
+            disabled={promptLocalStorage === record.promptName}
+            onClick={() => {
+              {
+                setPromptLocalStorage(record.promptName as string);
+              }
+            }}
+          >
+            <a>选择该提示词</a>
+          </Button>,
           <Button type={'primary'} key="edit">
             <a
               onClick={async () => {
@@ -90,6 +102,17 @@ export default () => {
       return '可创建的提示词为' + (maxPromptCount - number) + '个';
     }
   };
+
+  const [promptLocalStorage, setPromptLocalStorage] = useState<string>('');
+
+  useEffect(() => {
+    if (!promptLocalStorage) {
+      setPromptLocalStorage(localStorage.getItem('promptLocalStorage')); // 设置全局状态
+    } else {
+      localStorage.setItem('promptLocalStorage', promptLocalStorage);
+    }
+  }, [promptLocalStorage]);
+
   return (
     <PageContainer>
       <ProTable<API.PromptVO>

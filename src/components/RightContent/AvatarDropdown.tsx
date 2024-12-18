@@ -1,3 +1,4 @@
+import { removePromptLocalStorage, removeSelectedAiModel } from '@/pages/Utils/utils';
 import { userLogoutUsingPost } from '@/services/hot-news/userController';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
@@ -44,6 +45,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     await userLogoutUsingPost();
+    removePromptLocalStorage();
+    removeSelectedAiModel();
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */
