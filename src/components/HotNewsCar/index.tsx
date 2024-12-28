@@ -87,7 +87,7 @@ export const HotNewsCar: React.FC<{
         <List split={false}>
           <VirtualList
             data={refresh ? data : hotList}
-            height={250}
+            height={450}
             itemHeight={20}
             disabled={true}
             itemKey={(item) => (item.id !== null ? item.id : item.biId)}

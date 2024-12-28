@@ -23,6 +23,7 @@ export default [
   },
   { name: '任务中心', icon: 'table', path: '/task', component: './Task' },
   { name: '账号中心', path: '/User/account/centre', component: './User/AccountCentre' },
+  { name: '托管', path: '/AiTrusteeship', component: './AiTrusteeship' },
   { name: '我的提示词', path: '/prompt', component: './Prompt' },
   { name: '模型配置', path: '/ai_model', component: './AiModel' },
   { path: '/', redirect: '/index' },

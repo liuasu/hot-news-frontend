@@ -4,31 +4,32 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <DefaultFooter
+    <div
       style={{
-        background: 'none',
+        padding: '16px',
+        position: 'relative', // 改为相对定位
+        width: '100%',
+        height: '60px',
       }}
-      links={[
-        {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
-          href: 'https://pro.ant.design',
-          blankTarget: true,
-        },
-        {
-          key: 'github',
-          title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
-          blankTarget: true,
-        },
-        {
-          key: 'Hot News',
-          title: 'Ant Design',
-          href: 'https://ant.design',
-          blankTarget: true,
-        },
-      ]}
-    />
+    >
+      <DefaultFooter
+        style={{
+          background: 'none',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        links={[
+          {
+            key: 'github',
+            title: <GithubOutlined />,
+            href: 'https://github.com/ant-design/ant-design-pro',
+            blankTarget: true,
+          },
+        ]}
+      />
+    </div>
   );
 };
 

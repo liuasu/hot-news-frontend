@@ -104,6 +104,7 @@ export default () => {
       width: 200,
       render: (text, record, index) => [
         <Button
+          key={'create'}
           type="primary"
           onClick={async () => {
             try {
