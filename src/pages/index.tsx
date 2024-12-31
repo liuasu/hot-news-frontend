@@ -3,7 +3,7 @@ import {
   qqNewsHotNewsUsingGet,
   thePaPerHotNewsUsingGet,
   thirtySixKrHotNewsUsingGet,
-  wangYiHotNews2UsingGet,
+  wangYiHotNews2UsingPost,
 } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
 import { message } from 'antd';
@@ -40,11 +40,21 @@ const Index: React.FC = () => {
   const [wangYiHotList, setWangYiHotList] = useState<API.HotNewsVO[]>([]);
   const [wangYiType, setWangYiType] = useState<API.HotApiVO[]>([]);
   const [wangYiDateTime, setWangYiDateTime] = useState<Date>();
+  const [currentType, setCurrentType] = useState<API.HotApiVO | null>(null);
+
+  // 处理类型变化
+  const handleTypeChange = (type: API.HotApiVO) => {
+    setCurrentType(type);
+    console.log('选中的数据源:', type);
+  };
+
+  // 获取网易热点数据
   const wangYiHosts = async (platform?: string) => {
     try {
-      const res = await wangYiHotNews2UsingGet({
-        platform: platform,
-      } as API.WangYiHotNews2UsingGETParams);
+      const res = await wangYiHotNews2UsingPost({
+        hotType: platform,
+      } as API.HotNewsQueryReq);
+
       if (res.code === 0 && res.data) {
         setWangYiHotList(res.data?.newsList);
         setWangYiType(res.data?.hotType);
@@ -56,6 +66,7 @@ const Index: React.FC = () => {
     }
     return { code: -1, data: [] as API.HotNewsVO[] };
   };
+
   // 腾讯热点
   const [qqNewsHotList, setQQNewsHotList] = useState<API.HotNewsVO[]>([]);
   const [qqNewsDateTime, setQQNewsDateTime] = useState<Date>();
@@ -126,6 +137,7 @@ const Index: React.FC = () => {
             updateTime={wangYiDateTime as Date}
             fetchData={wangYiHosts}
             hotTypeList={wangYiType}
+            onTypeChange={handleTypeChange}
           />
 
           <HotNewsCar

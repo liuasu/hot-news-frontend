@@ -34,17 +34,17 @@ export async function wangYiHotNewsUsingGet(options?: { [key: string]: any }) {
   });
 }
 
-/** 网易热点2 GET /api/hot_new/wangyi2 */
-export async function wangYiHotNews2UsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.WangYiHotNews2UsingGETParams,
+/** 网易热点2 POST /api/hot_new/wangyi2 */
+export async function wangYiHotNews2UsingPost(
+  body: API.HotNewsQueryReq,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseMapStringObject_>('/api/hot_new/wangyi2', {
-    method: 'GET',
-    params: {
-      ...params,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }

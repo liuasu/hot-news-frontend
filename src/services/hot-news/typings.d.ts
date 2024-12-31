@@ -391,6 +391,10 @@ declare namespace API {
     platform?: string;
   };
 
+  type HotNewsQueryReq = {
+    hotType?: string;
+  };
+
   type HotNewsVO = {
     biId?: string;
     hotDesc?: string;
@@ -750,10 +754,6 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: string;
-  };
-
-  type WangYiHotNews2UsingGETParams = {
-    hotType?: string;
   };
 
   type ZoneId = {

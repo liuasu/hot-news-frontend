@@ -51,7 +51,16 @@ export const HotNewsCar: React.FC<{
   hotTypeList: API.HotApiVO[]; // 热点类型列表
   updateTime: Date; // 更新时间
   fetchData: (platform?: string) => Promise<any>; // 获取数据的函数
-}> = ({ platFormName, platFormURL, hotList, hotTypeList = [], updateTime, fetchData }) => {
+  onTypeChange?: (type: API.HotApiVO) => void; // 添加类型切换回调
+}> = ({
+  platFormName,
+  platFormURL,
+  hotList,
+  hotTypeList = [],
+  updateTime,
+  fetchData,
+  onTypeChange,
+}) => {
   // 组件内部状态
   const [data, setData] = useState<API.HotNewsVO[]>([]); // 存储刷新后的数据
   const [DateTime, setDateTime] = useState<Date>(); // 存储刷新后的时间
@@ -81,19 +90,24 @@ export const HotNewsCar: React.FC<{
   // 处理下拉菜单点击事件
   const onClick: MenuProps['onClick'] = async ({ key }) => {
     try {
-      setRefresh(true);
-      const res = await fetchData(key); // 调用父组件传入的获取数据函数
+      // 查找选中的类型
+      const selectedType = hotTypeList.find((item) => item.platform === key);
+      if (!selectedType) return;
+
+      // 通知父组件类型变化
+      onTypeChange?.(selectedType);
+
+      // 设置加载状态
+      // setRefresh(true);
+
+      // 获取新数据
+      const res = await fetchData(key);
       if (res.code === 0) {
         setData(res.data?.newsList || res.data);
         setDateTime(res.currentDateTime);
-        message.success('切换数据源成功');
-      } else {
-        message.error('切换数据源失败');
       }
     } catch (error) {
       message.error('请求失败');
-    } finally {
-      setRefresh(false);
     }
   };
 
@@ -106,11 +120,10 @@ export const HotNewsCar: React.FC<{
           <>
             <Image preview={false} style={{ width: 25, height: 25 }} src={platFormURL} />
             <span style={{ marginLeft: 8 }}>{platFormName}</span>
-            {/* 数据源选择下拉菜单 */}
             <Dropdown
               trigger={['hover']}
               menu={{
-                selectable: false,
+                selectable: true, // 启用选择功能
                 items: Array.isArray(hotTypeList)
                   ? hotTypeList.map((item) => ({
                       key: item.platform,
