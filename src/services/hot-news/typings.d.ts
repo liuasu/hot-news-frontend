@@ -807,4 +807,10 @@ declare namespace API {
     transitionRules?: ZoneOffsetTransitionRule[];
     transitions?: ZoneOffsetTransition[];
   };
+
+  type BaseResponseboolean = {
+    code?: number;
+    data?: boolean;
+    message?: string;
+  };
 }

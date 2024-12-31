@@ -100,3 +100,18 @@ export async function listUsingGet2(
     ...(options || {}),
   });
 }
+
+/** 上传Excel文件 POST /api/hotApi/upload */
+export async function uploadExcelUsingPost(
+  body: FormData,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseboolean>('/api/hotApi/upload', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

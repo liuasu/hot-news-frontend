@@ -102,7 +102,13 @@ export default () => {
           >
             新建
           </Button>,
-          <FileUpload key="fileupload" />,
+          <FileUpload
+            key="fileupload"
+            onSuccess={() => {
+              // 刷新表格数据
+              actionRef.current?.reload();
+            }} 
+          />,
         ]}
       />
 
