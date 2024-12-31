@@ -1,7 +1,7 @@
 import CreateModal from '@/pages/Admin/HotApi/componentss/CreateModal';
 import FileUpload from '@/pages/Admin/HotApi/componentss/FileUpload';
 import UpdateModal from '@/pages/Admin/HotApi/componentss/UpdateModal';
-import { findHotApiByIdUsingGet, listUsingGet1 } from '@/services/hot-news/redianxinxijiekoude';
+import { findHotApiByIdUsingGet, listUsingGet2 } from '@/services/hot-news/redianxinxijiekoude';
 import { PlusOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
@@ -80,7 +80,7 @@ export default () => {
           defaultPageSize: 10,
         }}
         request={async (params) => {
-          const res = await listUsingGet1({
+          const res = await listUsingGet2({
             apiName: params.apiName,
             platform: params.platform,
             pageSize: params.pageSize,

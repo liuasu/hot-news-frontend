@@ -1,6 +1,6 @@
 import CreateModal from '@/pages/Admin/Prompt/componentss/CreateModal';
 import UpdateModal from '@/pages/Admin/Prompt/componentss/UpdateModal';
-import { deleteUsingPost, getByIdUsingGet, listUsingGet3 } from '@/services/hot-news/aitishici';
+import { deleteUsingPost1, getByIdUsingGet, listUsingGet5 } from '@/services/hot-news/aitishici';
 import { PlusOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
@@ -62,7 +62,7 @@ export default () => {
           <Button type={'primary'} danger key="delete">
             <a
               onClick={async () => {
-                const res = await deleteUsingPost({
+                const res = await deleteUsingPost1({
                   id: record.id,
                 } as API.deleteUsingPOSTParams);
                 if (res.code === 0) {
@@ -97,7 +97,7 @@ export default () => {
           defaultPageSize: 10,
         }}
         request={async (params) => {
-          const res = await listUsingGet3({
+          const res = await listUsingGet5({
             pageSize: params.pageSize,
             current: params.current,
           });

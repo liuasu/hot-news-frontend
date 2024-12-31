@@ -3,9 +3,10 @@ import {
   qqNewsHotNewsUsingGet,
   thePaPerHotNewsUsingGet,
   thirtySixKrHotNewsUsingGet,
-  wangYiHotNewsUsingGet,
+  wangYiHotNews2UsingGet,
 } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
+import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 const Index: React.FC = () => {
@@ -37,15 +38,23 @@ const Index: React.FC = () => {
 
   // 网易热点
   const [wangYiHotList, setWangYiHotList] = useState<API.HotNewsVO[]>([]);
+  const [wangYiType, setWangYiType] = useState<API.HotApiVO[]>([]);
   const [wangYiDateTime, setWangYiDateTime] = useState<Date>();
-  const wangYiHosts = async () => {
-    const res = await wangYiHotNewsUsingGet();
-    if (res.code === 0 && res.data) {
-      setWangYiHotList(res.data);
-      setWangYiDateTime(res.currentDateTime);
-      return res;
+  const wangYiHosts = async (platform?: string) => {
+    try {
+      const res = await wangYiHotNews2UsingGet({
+        platform: platform,
+      } as API.WangYiHotNews2UsingGETParams);
+      if (res.code === 0 && res.data) {
+        setWangYiHotList(res.data?.newsList);
+        setWangYiType(res.data?.hotType);
+        setWangYiDateTime(res.currentDateTime);
+        return res;
+      }
+    } catch (error) {
+      message.error('获取数据失败');
     }
-    return [] as API.HotNewsVO[];
+    return { code: -1, data: [] as API.HotNewsVO[] };
   };
   // 腾讯热点
   const [qqNewsHotList, setQQNewsHotList] = useState<API.HotNewsVO[]>([]);
@@ -94,6 +103,7 @@ const Index: React.FC = () => {
             hotList={thePaPerHotList}
             updateTime={thePaPerDateTime as Date}
             fetchData={thePaPerHosts}
+            hotTypeList={wangYiType}
           />
 
           <HotNewsCar
@@ -104,6 +114,7 @@ const Index: React.FC = () => {
             hotList={thirtySixHotList}
             updateTime={thirtySixDateTime as Date}
             fetchData={thirtySixHosts}
+            hotTypeList={wangYiType}
           />
 
           <HotNewsCar
@@ -114,6 +125,7 @@ const Index: React.FC = () => {
             hotList={wangYiHotList}
             updateTime={wangYiDateTime as Date}
             fetchData={wangYiHosts}
+            hotTypeList={wangYiType}
           />
 
           <HotNewsCar
@@ -124,6 +136,7 @@ const Index: React.FC = () => {
             hotList={qqNewsHotList}
             updateTime={qqNewsDateTime as Date}
             fetchData={qqNewsHosts}
+            hotTypeList={wangYiType}
           />
         </div>
       </div>

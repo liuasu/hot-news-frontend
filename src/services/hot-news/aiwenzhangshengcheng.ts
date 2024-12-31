@@ -16,3 +16,18 @@ export async function productionArticleUsingPost(
     ...(options || {}),
   });
 }
+
+/** 托管 POST /api/production/trusteeship */
+export async function aiTrusteeshipUsingPost(
+  body: API.ProductionTrusteeshipAddReq,
+  options?: { [key: string]: any },
+) {
+  return request<any>('/api/production/trusteeship', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

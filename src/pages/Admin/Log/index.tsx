@@ -1,5 +1,5 @@
 import { resStatusMap } from '@/pages/Utils/utils';
-import { listUsingGet2 } from '@/services/hot-news/caozuorizhiji';
+import { listUsingGet3 } from '@/services/hot-news/caozuorizhiji';
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Tag } from 'antd';
@@ -119,7 +119,7 @@ const Index: React.FC = () => {
             defaultPageSize: 10,
           }}
           request={async (params) => {
-            const res = await listUsingGet2({
+            const res = await listUsingGet3({
               userName: params.operUser,
               startTime: params.operTime?.[0],
               endTime: params.operTime?.[1],

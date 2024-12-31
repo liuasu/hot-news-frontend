@@ -7,12 +7,8 @@ import {
   statusMap,
 } from '@/pages/Utils/utils';
 import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
-import {
-  deleteUsingPost1,
-  editUsingPost5,
-  hotNewsQueryArticlesUsingPost,
-  listUsingGet5,
-} from '@/services/hot-news/renwuzhongxin';
+import { editUsingPost4 } from '@/services/hot-news/redianxinxijiekoude';
+import { hotNewsQueryArticlesUsingPost, listUsingGet6 } from '@/services/hot-news/renwuzhongxin';
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
@@ -152,14 +148,8 @@ export default () => {
       ellipsis: true,
       valueType: 'select',
       width: 100,
-      // statusMap[((Math.floor(record.taskStatus * 10) % 5) + '') as '0']
       render: (_, record) => (
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        <Tag color={statusMap[record.taskStatus].color}>
-          {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
-          {statusMap[record.taskStatus].text}
-          {/*{statusMap[(Math.floor(record.taskStatus * 10) % 5) + ''].text}*/}
-        </Tag>
+        <Tag color={statusMap[record.taskStatus].color}>{statusMap[record.taskStatus].text}</Tag>
       ),
       valueEnum: statusMap,
     },
@@ -245,7 +235,7 @@ export default () => {
         <Button type="primary" danger disabled={record.taskStatus === 1}>
           <a
             onClick={async () => {
-              const res = await deleteUsingPost1({
+              const res = await editUsingPost4({
                 id: record.id,
               } as API.deleteUsingPOSTParams);
               if (res.code === 0) {
@@ -297,12 +287,12 @@ export default () => {
               defaultPageSize: 10,
             }}
             request={async (params) => {
-              const res = await listUsingGet5({
+              const res = await listUsingGet6({
                 pageSize: params.pageSize,
                 current: params.current,
                 platForm: params.platFormAccount,
                 taskStatus: params.taskStatus,
-              } as API.listUsingGET5Params);
+              } as API.listUsingGET2Params);
               const records = res.data?.records;
               return {
                 data: records,

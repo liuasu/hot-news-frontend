@@ -5,15 +5,13 @@ declare namespace API {
     thirdPartyAccountVOList?: ThirdPartyAccountVO[];
   };
 
-  type AiConfigAddReq = {
-    /** ai平台 */
-    aiPlatForm?: string;
-    /** apiKey */
-    apiKey?: string;
-    /** apiSecret */
-    apiSecret?: string;
-    /** appid */
-    appId?: string;
+  type AccountTrusteeship = {
+    account?: string;
+    hotType?: string;
+    isDisabled?: boolean;
+    platForm?: string;
+    publishMaxNumber?: number;
+    userName?: string;
   };
 
   type AiConfigEditReq = {
@@ -30,8 +28,8 @@ declare namespace API {
   };
 
   type AiConfigVO = {
-    aiPlatFormName?: string;
     aiPlatForm?: string;
+    aiPlatFormName?: string;
     apiKey?: string;
     apiSecret?: string;
     appId?: string;
@@ -50,6 +48,14 @@ declare namespace API {
     code?: number;
     currentDateTime?: DateTime;
     data?: boolean;
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponseDict_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: Dict;
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -74,6 +80,14 @@ declare namespace API {
     code?: number;
     currentDateTime?: DateTime;
     data?: AiConfigVO[];
+    message?: string;
+    updateDateTime?: DateTime;
+  };
+
+  type BaseResponseListDict_ = {
+    code?: number;
+    currentDateTime?: DateTime;
+    data?: Dict[];
     message?: string;
     updateDateTime?: DateTime;
   };
@@ -242,9 +256,59 @@ declare namespace API {
     id: number;
   };
 
+  type deleteUsingPOST2Params = {
+    /** id */
+    id: number;
+  };
+
   type deleteUsingPOSTParams = {
     /** id */
     id: number;
+  };
+
+  type Dict = {
+    createTime?: string;
+    dictChildId?: number;
+    dictLabelKey?: string;
+    dictLabelValues?: string;
+    dictName?: string;
+    id?: number;
+    isDelete?: number;
+    status?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type DictAddReq = {
+    /** 字典类型 */
+    dictChildId?: number;
+    /** 字典标签(key) */
+    dictLabelKey?: string;
+    /** 字典标签(values) */
+    dictLabelValues?: string;
+    /** 字典名称 */
+    dictName?: string;
+    /** 状态（0正常 1停用） */
+    status?: number;
+    /** 用户id */
+    userId?: number;
+  };
+
+  type DictEditReq = {
+    /** 字典类型 */
+    dictChildId?: number;
+    /** 字典标签(key) */
+    dictLabelKey?: string;
+    /** 字典标签(values) */
+    dictLabelValues?: string;
+    /** 字典名称 */
+    dictName?: string;
+    /** id */
+    id?: number;
+    /** 状态（0正常 1停用） */
+    status?: number;
+    /** 用户id */
+    userId?: number;
   };
 
   type Duration = {
@@ -260,12 +324,17 @@ declare namespace API {
     id: number;
   };
 
-  type editUsingPOST3Params = {
+  type editUsingPOST4Params = {
     /** id */
     id: number;
   };
 
   type findAiConfigByIdUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
+  type findDictByIdUsingGETParams = {
     /** id */
     id: number;
   };
@@ -332,6 +401,19 @@ declare namespace API {
   };
 
   type listUsingGET1Params = {
+    createTime?: string;
+    dictChildId?: number;
+    dictLabelKey?: string;
+    dictLabelValues?: string;
+    dictName?: string;
+    id?: number;
+    isDelete?: number;
+    status?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type listUsingGET2Params = {
     /** 接口名称 */
     apiName?: string;
     /** 平台 */
@@ -342,7 +424,7 @@ declare namespace API {
     sortOrder?: string;
   };
 
-  type listUsingGET2Params = {
+  type listUsingGET3Params = {
     current?: number;
     endTime?: string;
     pageSize?: number;
@@ -352,14 +434,14 @@ declare namespace API {
     userName?: string;
   };
 
-  type listUsingGET3Params = {
+  type listUsingGET4Params = {
     current?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
   };
 
-  type listUsingGET5Params = {
+  type listUsingGET6Params = {
     /** 第三方账号平台 */
     platForm?: string;
     /** 任务状态 */
@@ -501,6 +583,12 @@ declare namespace API {
     hotURL?: string;
     platformName?: string;
     title?: string;
+  };
+
+  type ProductionTrusteeshipAddReq = {
+    accountTrusteeshipsList?: AccountTrusteeship[];
+    aiPlatForm?: string;
+    promptName?: string;
   };
 
   type PromptAddReq = {
@@ -662,6 +750,10 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: string;
+  };
+
+  type WangYiHotNews2UsingGETParams = {
+    hotType?: string;
   };
 
   type ZoneId = {

@@ -29,9 +29,9 @@ export async function addUsingPost2(body: API.PromptAddReq, options?: { [key: st
 }
 
 /** 查询ai提示词列表 GET /api/prompt/admin/list */
-export async function listUsingGet3(
+export async function listUsingGet4(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET3Params,
+  params: API.listUsingGET4Params,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePagePromptVO_>('/api/prompt/admin/list', {
@@ -44,9 +44,9 @@ export async function listUsingGet3(
 }
 
 /** 删除ai提示词 POST /api/prompt/delete/${param0} */
-export async function deleteUsingPost(
+export async function deleteUsingPost1(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingPOSTParams,
+  params: API.deleteUsingPOST1Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -58,7 +58,7 @@ export async function deleteUsingPost(
 }
 
 /** 修改ai提示词 POST /api/prompt/edit */
-export async function editUsingPost4(body: API.PromptEditReq, options?: { [key: string]: any }) {
+export async function editUsingPost5(body: API.PromptEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/prompt/edit', {
     method: 'POST',
     headers: {
@@ -70,7 +70,7 @@ export async function editUsingPost4(body: API.PromptEditReq, options?: { [key: 
 }
 
 /** 查询ai提示词列表 GET /api/prompt/list */
-export async function listUsingGet4(options?: { [key: string]: any }) {
+export async function listUsingGet5(options?: { [key: string]: any }) {
   return request<API.BaseResponseListPromptVO_>('/api/prompt/list', {
     method: 'GET',
     ...(options || {}),

@@ -1,4 +1,4 @@
-import { editUsingPost2 } from '@/services/hot-news/redianxinxijiekoude';
+import { editUsingPost5 } from '@/services/hot-news/aitishici';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { message, Modal } from 'antd';
 import React from 'react';
@@ -19,7 +19,7 @@ interface Props {
 const handleUpdate = async (fields: API.HotApiEditReq) => {
   const hide = message.loading('正在更新');
   try {
-    await editUsingPost2(fields);
+    await editUsingPost5(fields);
     hide();
     message.success('更新成功');
     return true;

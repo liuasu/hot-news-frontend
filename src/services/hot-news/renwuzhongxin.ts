@@ -15,9 +15,9 @@ export async function addUsingPost3(body: API.TaskAddReq, options?: { [key: stri
 }
 
 /** 删除任务中心 POST /api/task/delete/${param0} */
-export async function deleteUsingPost1(
+export async function deleteUsingPost2(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingPOST1Params,
+  params: API.deleteUsingPOST2Params,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -29,7 +29,7 @@ export async function deleteUsingPost1(
 }
 
 /** 修改任务中心 POST /api/task/edit */
-export async function editUsingPost5(body: API.TaskEditReq, options?: { [key: string]: any }) {
+export async function editUsingPost6(body: API.TaskEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/task/edit', {
     method: 'POST',
     headers: {
@@ -41,9 +41,9 @@ export async function editUsingPost5(body: API.TaskEditReq, options?: { [key: st
 }
 
 /** 查询任务中心列表 GET /api/task/list */
-export async function listUsingGet5(
+export async function listUsingGet6(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET5Params,
+  params: API.listUsingGET6Params,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTaskVO_>('/api/task/list', {

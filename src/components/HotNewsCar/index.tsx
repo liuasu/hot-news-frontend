@@ -1,9 +1,25 @@
 import { addUsingPost3 } from '@/services/hot-news/renwuzhongxin';
-import { RedoOutlined } from '@ant-design/icons';
-import { Button, Card, Image, List, message, Popover } from 'antd';
+import { DownOutlined, RedoOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Dropdown,
+  Image,
+  List,
+  MenuProps,
+  message,
+  Popover,
+  Space,
+  Typography,
+} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, { useEffect, useState } from 'react';
 
+/**
+ * 计算时间差的工具函数
+ * @param timestamp 要计算的时间戳
+ * @returns 格式化后的时间差字符串
+ */
 const calculateTimeDifference = (timestamp: Date) => {
   const currentTime = new Date().getTime();
   const targetTime = new Date(timestamp).getTime();
@@ -27,16 +43,21 @@ const calculateTimeDifference = (timestamp: Date) => {
   }
 };
 
+// 定义组件的 Props 类型
 export const HotNewsCar: React.FC<{
-  platFormName: string;
-  platFormURL: string;
-  hotList: API.HotNewsVO[];
-  updateTime: Date;
-  fetchData: () => API.HotNewsVO[];
-}> = ({ platFormName, platFormURL, hotList, updateTime, fetchData }) => {
-  const [data, setData] = useState<API.HotNewsVO[]>([]);
-  const [DateTime, setDateTime] = useState<Date>();
-  const [refresh, setRefresh] = useState(false);
+  platFormName: string; // 平台名称
+  platFormURL: string; // 平台图标 URL
+  hotList: API.HotNewsVO[]; // 热点新闻列表
+  hotTypeList: API.HotApiVO[]; // 热点类型列表
+  updateTime: Date; // 更新时间
+  fetchData: (platform?: string) => Promise<any>; // 获取数据的函数
+}> = ({ platFormName, platFormURL, hotList, hotTypeList = [], updateTime, fetchData }) => {
+  // 组件内部状态
+  const [data, setData] = useState<API.HotNewsVO[]>([]); // 存储刷新后的数据
+  const [DateTime, setDateTime] = useState<Date>(); // 存储刷新后的时间
+  const [refresh, setRefresh] = useState(false); // 控制刷新状态
+
+  // 监听刷新状态，当需要刷新时获取新数据
   useEffect(() => {
     const loading = async () => {
       const res = await fetchData();
@@ -54,24 +75,64 @@ export const HotNewsCar: React.FC<{
     }
   }, [fetchData, refresh]);
 
+  // 确定显示哪个时间（刷新后的时间或初始时间）
   const newVar = refresh ? DateTime : updateTime;
 
+  // 处理下拉菜单点击事件
+  const onClick: MenuProps['onClick'] = async ({ key }) => {
+    try {
+      setRefresh(true);
+      const res = await fetchData(key); // 调用父组件传入的获取数据函数
+      if (res.code === 0) {
+        setData(res.data?.newsList || res.data);
+        setDateTime(res.currentDateTime);
+        message.success('切换数据源成功');
+      } else {
+        message.error('切换数据源失败');
+      }
+    } catch (error) {
+      message.error('请求失败');
+    } finally {
+      setRefresh(false);
+    }
+  };
+
+  // 渲染组件
   return (
     <div>
       <Card
+        // 卡片标题部分：包含平台图标、名称和下拉菜单
         title={
           <>
             <Image preview={false} style={{ width: 25, height: 25 }} src={platFormURL} />
-            <span />
-            <span> {platFormName}</span>
+            <span style={{ marginLeft: 8 }}>{platFormName}</span>
+            {/* 数据源选择下拉菜单 */}
+            <Dropdown
+              trigger={['hover']}
+              menu={{
+                selectable: false,
+                items: Array.isArray(hotTypeList)
+                  ? hotTypeList.map((item) => ({
+                      key: item.platform,
+                      label: item.apiName.replace('网易', ''),
+                    }))
+                  : [],
+                onClick,
+              }}
+            >
+              <Typography.Link style={{ marginLeft: 16 }}>
+                <Space>
+                  <DownOutlined />
+                </Space>
+              </Typography.Link>
+            </Dropdown>
           </>
         }
         extra={'热门榜'}
         style={{ width: 300 }}
+        // 卡片底部操作区
         actions={[
-          // eslint-disable-next-line react/jsx-key
           <span>{calculateTimeDifference(newVar as Date)}更新</span>,
-          // eslint-disable-next-line react/jsx-key
           <Button
             type="primary"
             shape="circle"
@@ -84,6 +145,7 @@ export const HotNewsCar: React.FC<{
         bordered={true}
         loading={refresh}
       >
+        {/* 使用虚拟列表展示热点新闻 */}
         <List split={false}>
           <VirtualList
             data={refresh ? data : hotList}
@@ -92,6 +154,7 @@ export const HotNewsCar: React.FC<{
             disabled={true}
             itemKey={(item) => (item.id !== null ? item.id : item.biId)}
           >
+            {/* 渲染每条新闻 */}
             {(item: API.HotNewsVO, index) => (
               <List.Item key={item.id !== null ? item.id : item.biId}>
                 <List.Item.Meta

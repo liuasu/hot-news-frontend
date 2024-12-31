@@ -16,18 +16,6 @@ export async function findAiConfigByIdUsingGet(
   });
 }
 
-/** 添加ai 秘钥配 POST /api/aiConfig/add */
-export async function addUsingPost(body: API.AiConfigAddReq, options?: { [key: string]: any }) {
-  return request<API.BaseResponseBoolean_>('/api/aiConfig/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 删除ai 秘钥配 POST /api/aiConfig/delete/${param0} */
 export async function editUsingPost1(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
