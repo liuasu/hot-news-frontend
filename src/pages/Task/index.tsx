@@ -7,8 +7,11 @@ import {
   statusMap,
 } from '@/pages/Utils/utils';
 import { productionArticleUsingPost } from '@/services/hot-news/aiwenzhangshengcheng';
-import { editUsingPost4 } from '@/services/hot-news/redianxinxijiekoude';
-import { hotNewsQueryArticlesUsingPost, listUsingGet6 } from '@/services/hot-news/renwuzhongxin';
+import {
+  deleteUsingPost2,
+  hotNewsQueryArticlesUsingPost,
+  listUsingGet6,
+} from '@/services/hot-news/renwuzhongxin';
 import { getThirdPartyAccountListUsingGet } from '@/services/hot-news/zhanghaozhongxin';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
@@ -235,10 +238,10 @@ export default () => {
         <Button type="primary" danger disabled={record.taskStatus === 1}>
           <a
             onClick={async () => {
-              const res = await editUsingPost4({
+              const res = await deleteUsingPost2({
                 id: record.id,
               } as API.deleteUsingPOSTParams);
-              if (res.code === 0) {
+              if (res.code === 0 && res.data === true) {
                 message.success('已取消');
                 action?.reload();
               }

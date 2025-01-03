@@ -256,11 +256,6 @@ declare namespace API {
     id: number;
   };
 
-  type deleteUsingPOST2Params = {
-    /** id */
-    id: number;
-  };
-
   type deleteUsingPOSTParams = {
     /** id */
     id: number;
@@ -294,6 +289,11 @@ declare namespace API {
     userId?: number;
   };
 
+  type dictDeleteUsingPOSTParams = {
+    /** id */
+    id: number;
+  };
+
   type DictEditReq = {
     /** 字典类型 */
     dictChildId?: number;
@@ -311,6 +311,24 @@ declare namespace API {
     userId?: number;
   };
 
+  type dictFindDictByIdUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
+  type dictListUsingGETParams = {
+    createTime?: string;
+    dictChildId?: number;
+    dictLabelKey?: string;
+    dictLabelValues?: string;
+    dictName?: string;
+    id?: number;
+    isDelete?: number;
+    status?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
   type Duration = {
     nano?: number;
     negative?: boolean;
@@ -319,6 +337,10 @@ declare namespace API {
     zero?: boolean;
   };
 
+  type deleteUsingParams = {
+    /** id */
+    id: number;
+  };
   type editUsingPOST1Params = {
     /** id */
     id: number;
@@ -330,11 +352,6 @@ declare namespace API {
   };
 
   type findAiConfigByIdUsingGETParams = {
-    /** id */
-    id: number;
-  };
-
-  type findDictByIdUsingGETParams = {
     /** id */
     id: number;
   };
@@ -386,6 +403,7 @@ declare namespace API {
   type HotApiVO = {
     apiDescribe?: string;
     apiName?: string;
+    apiParam?: string;
     apiURL?: string;
     id?: number;
     platform?: string;
@@ -405,19 +423,6 @@ declare namespace API {
   };
 
   type listUsingGET1Params = {
-    createTime?: string;
-    dictChildId?: number;
-    dictLabelKey?: string;
-    dictLabelValues?: string;
-    dictName?: string;
-    id?: number;
-    isDelete?: number;
-    status?: number;
-    updateTime?: string;
-    userId?: number;
-  };
-
-  type listUsingGET2Params = {
     /** 接口名称 */
     apiName?: string;
     /** 平台 */
@@ -806,11 +811,5 @@ declare namespace API {
     fixedOffset?: boolean;
     transitionRules?: ZoneOffsetTransitionRule[];
     transitions?: ZoneOffsetTransition[];
-  };
-
-  type BaseResponseboolean = {
-    code?: number;
-    data?: boolean;
-    message?: string;
   };
 }

@@ -3,9 +3,9 @@
 import { request } from '@umijs/max';
 
 /** 按id获取字典 GET /api/dict/${param0} */
-export async function findDictByIdUsingGet(
+export async function dictFindDictByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.findDictByIdUsingGETParams,
+  params: API.dictFindDictByIdUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -17,9 +17,9 @@ export async function findDictByIdUsingGet(
 }
 
 /** 删除字典 POST /api/dict/${param0} */
-export async function deleteUsingPost(
+export async function dictDeleteUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingPOSTParams,
+  params: API.dictDeleteUsingPOSTParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -31,7 +31,7 @@ export async function deleteUsingPost(
 }
 
 /** 添加字典 POST /api/dict/add */
-export async function addUsingPost(body: API.DictAddReq, options?: { [key: string]: any }) {
+export async function dictAddUsingPost(body: API.DictAddReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/dict/add', {
     method: 'POST',
     headers: {
@@ -43,7 +43,7 @@ export async function addUsingPost(body: API.DictAddReq, options?: { [key: strin
 }
 
 /** 修改字典 POST /api/dict/edit */
-export async function editUsingPost2(body: API.DictEditReq, options?: { [key: string]: any }) {
+export async function dictEditUsingPost(body: API.DictEditReq, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/dict/edit', {
     method: 'POST',
     headers: {
@@ -55,9 +55,9 @@ export async function editUsingPost2(body: API.DictEditReq, options?: { [key: st
 }
 
 /** 查询字典列表 GET /api/dict/list */
-export async function listUsingGet1(
+export async function dictListUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listUsingGET1Params,
+  params: API.dictListUsingGETParams,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseListDict_>('/api/dict/list', {

@@ -17,7 +17,7 @@ export async function addUsingPost3(body: API.TaskAddReq, options?: { [key: stri
 /** 删除任务中心 POST /api/task/delete/${param0} */
 export async function deleteUsingPost2(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteUsingPOST2Params,
+  params: API.deleteUsingParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;

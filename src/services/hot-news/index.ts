@@ -6,16 +6,17 @@ import * as aimiyaopei from './aimiyaopei';
 import * as aitishici from './aitishici';
 import * as aiwenzhangshengcheng from './aiwenzhangshengcheng';
 import * as caozuorizhiji from './caozuorizhiji';
+import * as dictController from './dictController';
 import * as fileController from './fileController';
 import * as pingtairedian from './pingtairedian';
 import * as redianxinxijiekoude from './redianxinxijiekoude';
 import * as renwuzhongxin from './renwuzhongxin';
 import * as userController from './userController';
 import * as zhanghaozhongxin from './zhanghaozhongxin';
-import * as zidian from './zidian';
+
 export default {
   aimiyaopei,
-  zidian,
+  dictController,
   fileController,
   redianxinxijiekoude,
   pingtairedian,

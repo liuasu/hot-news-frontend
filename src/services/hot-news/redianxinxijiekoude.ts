@@ -29,7 +29,7 @@ export async function addUsingPost1(body: API.HotApiAddReq, options?: { [key: st
 }
 
 /** 删除热点信息接口地 POST /api/hotApi/delete/${param0} */
-export async function editUsingPost4(
+export async function deleteUsingPost4(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.editUsingPOST4Params,
   options?: { [key: string]: any },
@@ -97,21 +97,6 @@ export async function listUsingGet2(
     params: {
       ...params,
     },
-    ...(options || {}),
-  });
-}
-
-/** 上传Excel文件 POST /api/hotApi/upload */
-export async function uploadExcelUsingPost(
-  body: FormData,
-  options?: { [key: string]: any },
-) {
-  return request<API.BaseResponseboolean>('/api/hotApi/upload', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    data: body,
     ...(options || {}),
   });
 }

@@ -1,9 +1,9 @@
 import { HotNewsCar } from '@/components/HotNewsCar';
 import {
-  qqNewsHotNewsUsingGet,
-  thePaPerHotNewsUsingGet,
+  qqNewsHotNewsUsingPost,
+  thePaPerHotNewsUsingPost,
   thirtySixKrHotNewsUsingGet,
-  wangYiHotNews2UsingPost,
+  wangYiHotNewsUsingPost,
 } from '@/services/hot-news/pingtairedian';
 import { PageContainer } from '@ant-design/pro-components';
 import { message } from 'antd';
@@ -12,11 +12,21 @@ import React, { useEffect, useState } from 'react';
 const Index: React.FC = () => {
   // 澎湃 热门新闻
   const [thePaPerHotList, setThePaPerHotList] = useState<API.HotNewsVO[]>([]);
+  const [thePaPerType, setThePaPerType] = useState<API.HotApiVO[]>([]);
   const [thePaPerDateTime, setThePaPerDateTime] = useState<Date>();
-  const thePaPerHosts = async () => {
-    const res = await thePaPerHotNewsUsingGet();
+  const [thePaPerCurrentType, setThePaPerCurrentType] = useState<API.HotApiVO | null>(null);
+
+  // 处理类型变化
+  const handleThePaPerTypeChange = (type: API.HotApiVO) => {
+    setThePaPerCurrentType(type);
+  };
+  const thePaPerHosts = async (platform?: string) => {
+    const res = await thePaPerHotNewsUsingPost({
+      hotType: platform,
+    } as API.HotNewsQueryReq);
     if (res.code === 0 && res.data) {
-      setThePaPerHotList(res.data);
+      setThePaPerHotList(res.data?.newsList);
+      setThePaPerType(res.data?.hotType);
       setThePaPerDateTime(res.currentDateTime);
       return res;
     }
@@ -40,18 +50,17 @@ const Index: React.FC = () => {
   const [wangYiHotList, setWangYiHotList] = useState<API.HotNewsVO[]>([]);
   const [wangYiType, setWangYiType] = useState<API.HotApiVO[]>([]);
   const [wangYiDateTime, setWangYiDateTime] = useState<Date>();
-  const [currentType, setCurrentType] = useState<API.HotApiVO | null>(null);
+  const [wangYiCurrentType, setWangYiCurrentType] = useState<API.HotApiVO | null>(null);
 
   // 处理类型变化
-  const handleTypeChange = (type: API.HotApiVO) => {
-    setCurrentType(type);
-    console.log('选中的数据源:', type);
+  const handleWangYiTypeChange = (type: API.HotApiVO) => {
+    setWangYiCurrentType(type);
   };
 
   // 获取网易热点数据
   const wangYiHosts = async (platform?: string) => {
     try {
-      const res = await wangYiHotNews2UsingPost({
+      const res = await wangYiHotNewsUsingPost({
         hotType: platform,
       } as API.HotNewsQueryReq);
 
@@ -70,10 +79,20 @@ const Index: React.FC = () => {
   // 腾讯热点
   const [qqNewsHotList, setQQNewsHotList] = useState<API.HotNewsVO[]>([]);
   const [qqNewsDateTime, setQQNewsDateTime] = useState<Date>();
-  const qqNewsHosts = async () => {
-    const res = await qqNewsHotNewsUsingGet();
+  const [qqNewsType, setQQNewsType] = useState<API.HotApiVO[]>([]);
+  const [qqNewsCurrentType, setQQNewsCurrentType] = useState<API.HotApiVO | null>(null);
+
+  // 处理类型变化
+  const handleqqNewsTypeChange = (type: API.HotApiVO) => {
+    setQQNewsCurrentType(type);
+  };
+  const qqNewsHosts = async (platform?: string) => {
+    const res = await qqNewsHotNewsUsingPost({
+      hotType: platform,
+    } as API.HotNewsQueryReq);
     if (res.code === 0 && res.data) {
-      setQQNewsHotList(res.data);
+      setQQNewsHotList(res.data?.newsList);
+      setQQNewsType(res.data?.hotType);
       setQQNewsDateTime(res.currentDateTime);
       return res;
     }
@@ -114,7 +133,8 @@ const Index: React.FC = () => {
             hotList={thePaPerHotList}
             updateTime={thePaPerDateTime as Date}
             fetchData={thePaPerHosts}
-            hotTypeList={wangYiType}
+            hotTypeList={thePaPerType}
+            onTypeChange={handleThePaPerTypeChange}
           />
 
           <HotNewsCar
@@ -125,7 +145,8 @@ const Index: React.FC = () => {
             hotList={thirtySixHotList}
             updateTime={thirtySixDateTime as Date}
             fetchData={thirtySixHosts}
-            hotTypeList={wangYiType}
+            hotTypeList={[]}
+            onTypeChange={null}
           />
 
           <HotNewsCar
@@ -137,7 +158,7 @@ const Index: React.FC = () => {
             updateTime={wangYiDateTime as Date}
             fetchData={wangYiHosts}
             hotTypeList={wangYiType}
-            onTypeChange={handleTypeChange}
+            onTypeChange={handleWangYiTypeChange}
           />
 
           <HotNewsCar
@@ -148,7 +169,8 @@ const Index: React.FC = () => {
             hotList={qqNewsHotList}
             updateTime={qqNewsDateTime as Date}
             fetchData={qqNewsHosts}
-            hotTypeList={wangYiType}
+            hotTypeList={qqNewsType}
+            onTypeChange={handleqqNewsTypeChange}
           />
         </div>
       </div>

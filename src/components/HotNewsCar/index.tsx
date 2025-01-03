@@ -127,7 +127,7 @@ export const HotNewsCar: React.FC<{
                 items: Array.isArray(hotTypeList)
                   ? hotTypeList.map((item) => ({
                       key: item.platform,
-                      label: item.apiName.replace('网易', ''),
+                      label: item.apiName,
                     }))
                   : [],
                 onClick,
